@@ -4,6 +4,15 @@
 ### Features
 - Install Flutter ***Windows, Mac, Linux***
 
+#### How to use Flutter manager?
+Download the latest flutter-manager binary
+```
+go get -v github.com/complexorganizations/flutter-manager
+```
+```
+flutter-manager
+```
+
 ---
 ### Q&A
 
