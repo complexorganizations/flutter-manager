@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"os"
 	"os/exec"
 	"runtime"
 )
