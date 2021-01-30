@@ -27,8 +27,7 @@ func requirementsCheck() {
 
 // Choose OS to install flutter
 func selectOperatingSystem() {
-	os := runtime.GOOS
-	switch os {
+	switch runtime.GOOS {
 	case "windows":
 		installFlutterOnWindows()
 	case "darwin":
@@ -42,8 +41,7 @@ func selectOperatingSystem() {
 
 // Install Flutter on Windows
 func installFlutterOnWindows() {
-	windowsDir := "/src/flutter"
-	if isNotExist(windowsDir) {
+	if isNotExist("/src/flutter") {
 		exec.Command("git", "clone", "git@github.com:flutter/flutter.git", "/src/flutter", "-b stable")
 		exec.Command("setx", "path", "/src/flutter/bin")
 	} else {
@@ -54,8 +52,7 @@ func installFlutterOnWindows() {
 
 // Install Flutter On Mac
 func installFlutterOnMac() {
-	macDir := "/usr/local/flutter"
-	if isNotExist(macDir) {
+	if isNotExist("/usr/local/flutter") {
 		exec.Command("git", "clone", "git@github.com:flutter/flutter.git", "/usr/local/flutter", "-b stable")
 		ioutil.WriteFile("~/.profile", []byte("export PATH=$PATH:/usr/local/flutter/bin"), 0644)
 	} else {
@@ -66,8 +63,7 @@ func installFlutterOnMac() {
 
 // Install Flutter On Linux
 func installFlutterOnLinux() {
-	linuxDir := "/usr/local/flutter"
-	if isNotExist(linuxDir) {
+	if isNotExist("/usr/local/flutter") {
 		exec.Command("git", "clone", "git@github.com:flutter/flutter.git", "/usr/local/flutter", "-b stable")
 		ioutil.WriteFile("~/.profile", []byte("export PATH=$PATH:/usr/local/flutter/bin"), 0644)
 	} else {
