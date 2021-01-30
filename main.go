@@ -11,6 +11,15 @@ func main() {
 	flutterInstalledCheck()
 }
 
+func flutterInstalledCheck() {
+	if commandExists("flutter") {
+		log.Println("Error: Flutter found on the system")
+        } else {
+		selectOperatingSystem()
+        }
+}
+
+// Choose OS to install flutter
 func selectOperatingSystem() {
 	os := runtime.GOOS
 	switch os {
@@ -25,6 +34,7 @@ func selectOperatingSystem() {
 	}
 }
 
+// Install Flutter on Windows
 func installFlutterOnWindows() {
 	windowsDir := "/src"
 	if isNotExist(windowsDir) {
@@ -36,6 +46,7 @@ func installFlutterOnWindows() {
 	}
 }
 
+// Install Flutter On Mac
 func installFlutterOnMac() {
 	macDir := "/src"
 	if isNotExist(macDir) {
@@ -47,6 +58,7 @@ func installFlutterOnMac() {
 	}
 }
 
+// Install Flutter On Linux
 func installFlutterOnLinux() {
 	linuxDir := "/src"
 	if isNotExist(linuxDir) {
@@ -58,6 +70,9 @@ func installFlutterOnLinux() {
 	}
 }
 
+// GLOBAL CHECKS
+
+// Check if a directory exists
 func isNotExist(filename string) bool {
 	info, err := os.Stat(filename)
 	if os.IsNotExist(err) {
@@ -66,15 +81,7 @@ func isNotExist(filename string) bool {
 	return !info.IsDir()
 }
 
-func flutterInstalledCheck() {
-	if commandExists("flutter") {
-		log.Println("Error: Flutter found on the system")
-        } else {
-		selectOperatingSystem()
-        }
-}
-
-
+// Check if a command exists
 func commandExists(cmd string) bool {
         _, err := exec.LookPath(cmd)
         return err == nil
