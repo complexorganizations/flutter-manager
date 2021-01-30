@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -50,6 +51,7 @@ func installFlutterOnWindows() {
 	windowsDir := "/src/flutter"
 	if isNotExist(windowsDir) {
 		exec.Command("git", "clone", "git@github.com:flutter/flutter.git", "/src/flutter", "-b stable")
+		exec.Command("setx", "path", "/src/flutter/bin")
 	} else {
 		log.Println("Error: Couldn't create project.")
 		os.Exit(0)
@@ -61,6 +63,7 @@ func installFlutterOnMac() {
 	macDir := "/usr/local/flutter"
 	if isNotExist(macDir) {
 		exec.Command("git", "clone", "git@github.com:flutter/flutter.git", "/usr/local/flutter", "-b stable")
+		ioutil.WriteFile("~/.profile", []byte("export PATH=$PATH:/usr/local/flutter/bin"), 0644)
 	} else {
 		log.Println("Error: Couldn't create project.")
 		os.Exit(0)
@@ -72,6 +75,7 @@ func installFlutterOnLinux() {
 	linuxDir := "/usr/local/flutter"
 	if isNotExist(linuxDir) {
 		exec.Command("git", "clone", "git@github.com:flutter/flutter.git", "/usr/local/flutter", "-b stable")
+		ioutil.WriteFile("~/.profile", []byte("export PATH=$PATH:/usr/local/flutter/bin"), 0644)
 	} else {
 		log.Println("Error: Couldn't create project.")
 		os.Exit(0)
