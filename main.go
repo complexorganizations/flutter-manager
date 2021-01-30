@@ -5,6 +5,11 @@ import (
     "runtime"
 )
 
+func installFlutterOnWindows() {
+    os.Mkdir("/src/", 0755)
+    //os.Chdir("/src")
+}
+
 func selectOperatingSystem() {
     os := runtime.GOOS
     switch os {
