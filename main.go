@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"runtime"
 )
 
@@ -15,18 +16,18 @@ func flutterInstalledCheck() {
 	if commandExists("flutter") {
 		log.Println("Error: Flutter found on the system")
 		os.Exit(0)
-        } else {
+	} else {
 		gitInstalledCheck()
-        }
+	}
 }
 
 func gitInstalledCheck() {
 	if commandExists("git") {
 		selectOperatingSystem()
-        } else {
+	} else {
 		log.Println("Error: Git not found on the system")
 		os.Exit(0)
-        }
+	}
 }
 
 // Choose OS to install flutter
@@ -46,9 +47,9 @@ func selectOperatingSystem() {
 
 // Install Flutter on Windows
 func installFlutterOnWindows() {
-	windowsDir := "/src"
+	windowsDir := "/src/flutter"
 	if isNotExist(windowsDir) {
-		//
+		exec.Command("git", "clone", "git@github.com:flutter/flutter.git", "/src/flutter")
 	} else {
 		log.Println("Error: Couldn't create project.")
 		os.Exit(0)
@@ -59,7 +60,7 @@ func installFlutterOnWindows() {
 func installFlutterOnMac() {
 	macDir := "/usr/local/flutter"
 	if isNotExist(macDir) {
-		//
+		exec.Command("git", "clone", "git@github.com:flutter/flutter.git", "/usr/local/flutter")
 	} else {
 		log.Println("Error: Couldn't create project.")
 		os.Exit(0)
@@ -70,7 +71,7 @@ func installFlutterOnMac() {
 func installFlutterOnLinux() {
 	linuxDir := "/usr/local/flutter"
 	if isNotExist(linuxDir) {
-		//
+		exec.Command("git", "clone", "git@github.com:flutter/flutter.git", "/usr/local/flutter")
 	} else {
 		log.Println("Error: Couldn't create project.")
 		os.Exit(0)
@@ -90,6 +91,6 @@ func isNotExist(filename string) bool {
 
 // Check if a command exists
 func commandExists(cmd string) bool {
-        _, err := exec.LookPath(cmd)
-        return err == nil
+	_, err := exec.LookPath(cmd)
+	return err == nil
 }
