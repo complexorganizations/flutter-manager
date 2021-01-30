@@ -19,6 +19,14 @@ func flutterInstalledCheck() {
         }
 }
 
+func gitInstalledCheck() {
+	if commandExists("git") {
+		log.Println("Works!")
+        } else {
+		log.Println("Error: Git not found on the system")
+        }
+}
+
 // Choose OS to install flutter
 func selectOperatingSystem() {
 	os := runtime.GOOS
