@@ -49,7 +49,7 @@ func selectOperatingSystem() {
 func installFlutterOnWindows() {
 	windowsDir := "/src/flutter"
 	if isNotExist(windowsDir) {
-		exec.Command("git", "clone", "git@github.com:flutter/flutter.git", "/src/flutter")
+		exec.Command("git", "clone", "git@github.com:flutter/flutter.git", "/src/flutter" "-b stable")
 	} else {
 		log.Println("Error: Couldn't create project.")
 		os.Exit(0)
@@ -60,7 +60,7 @@ func installFlutterOnWindows() {
 func installFlutterOnMac() {
 	macDir := "/usr/local/flutter"
 	if isNotExist(macDir) {
-		exec.Command("git", "clone", "git@github.com:flutter/flutter.git", "/usr/local/flutter")
+		exec.Command("git", "clone", "git@github.com:flutter/flutter.git", "/usr/local/flutter" "-b stable")
 	} else {
 		log.Println("Error: Couldn't create project.")
 		os.Exit(0)
@@ -71,7 +71,7 @@ func installFlutterOnMac() {
 func installFlutterOnLinux() {
 	linuxDir := "/usr/local/flutter"
 	if isNotExist(linuxDir) {
-		exec.Command("git", "clone", "git@github.com:flutter/flutter.git", "/usr/local/flutter")
+		exec.Command("git", "clone", "git@github.com:flutter/flutter.git", "/usr/local/flutter" "-b stable")
 	} else {
 		log.Println("Error: Couldn't create project.")
 		os.Exit(0)
