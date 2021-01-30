@@ -10,25 +10,19 @@ import (
 )
 
 func main() {
-	flutterInstalledCheck()
+	requirementsCheck()
 }
 
-func flutterInstalledCheck() {
+// System Requirements Check
+func requirementsCheck() {
 	if commandExists("flutter") {
 		log.Println("Error: Flutter found on the system")
 		os.Exit(0)
-	} else {
-		gitInstalledCheck()
 	}
-}
-
-func gitInstalledCheck() {
 	if commandExists("git") {
 		selectOperatingSystem()
-	} else {
-		log.Println("Error: Git not found on the system")
-		os.Exit(0)
 	}
+
 }
 
 // Choose OS to install flutter
@@ -81,8 +75,6 @@ func installFlutterOnLinux() {
 		os.Exit(0)
 	}
 }
-
-// GLOBAL CHECKS
 
 // Check if a directory exists
 func isNotExist(filename string) bool {
