@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	selectOperatingSystem()
+	flutterInstalledCheck()
 }
 
 func selectOperatingSystem() {
@@ -64,4 +64,18 @@ func isNotExist(filename string) bool {
 		return true
 	}
 	return !info.IsDir()
+}
+
+func flutterInstalledCheck() {
+	if commandExists("flutter") {
+		log.Println("Error: Flutter found on the system")
+        } else {
+		selectOperatingSystem()
+        }
+}
+
+
+func commandExists(cmd string) bool {
+        _, err := exec.LookPath(cmd)
+        return err == nil
 }
