@@ -35,7 +35,7 @@ func selectOperatingSystem() {
 	case "linux":
 		installFlutterOnLinux()
 	default:
-		fmt.Printf("Error: %s Not Supported.\n", os)
+		fmt.Printf("Error: %s Not Supported.\n", runtime.GOOS)
 	}
 }
 
