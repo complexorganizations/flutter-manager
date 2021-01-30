@@ -5,7 +5,7 @@ import (
     "runtime"
 )
 
-func main() {
+func selectOperatingSystem() {
     os := runtime.GOOS
     switch os {
     case "windows":
@@ -15,6 +15,10 @@ func main() {
     case "linux":
         fmt.Println("Linux")
     default:
-        fmt.Printf("%s.\n", os)
+        fmt.Printf("Error: %s Not Supported.\n", os)
     }
+}
+
+func main() {
+    selectOperatingSystem()
 }
