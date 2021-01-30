@@ -14,6 +14,7 @@ func main() {
 func flutterInstalledCheck() {
 	if commandExists("flutter") {
 		log.Println("Error: Flutter found on the system")
+		os.Exit(0)
         } else {
 		gitInstalledCheck()
         }
@@ -24,7 +25,7 @@ func gitInstalledCheck() {
 		selectOperatingSystem()
         } else {
 		log.Println("Error: Git not found on the system")
-		os.Exit(1)
+		os.Exit(0)
         }
 }
 
