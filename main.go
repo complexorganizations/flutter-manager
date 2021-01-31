@@ -30,10 +30,9 @@ func pathCheck() {
 	data, err := ioutil.ReadFile("~/.profile")
 	fileData := string(data)
 	if strings.Contains(fileData, "flutter") {
-		log.Println("Error: Flutter discovered in your path.", err)
+		log.Println("Error: Flutter discovered in your path.")
 		os.Exit(0)
-	} else {
-		selectOperatingSystem()
+		log.Fatal(err)
 	}
 }
 
