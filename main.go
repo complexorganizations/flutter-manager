@@ -18,11 +18,11 @@ func requirementsCheck() {
 	if commandExists("flutter") {
 		log.Println("Error: Flutter found on the system")
 		os.Exit(0)
+	} else {
+		if commandExists("git") {
+			selectOperatingSystem()
+		}
 	}
-	if commandExists("git") {
-		selectOperatingSystem()
-	}
-
 }
 
 // Choose OS to install flutter
