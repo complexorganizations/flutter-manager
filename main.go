@@ -20,9 +20,7 @@ func requirementsCheck() {
 		log.Println("Error: Flutter discovered in the system.")
 		os.Exit(0)
 	}
-	if commandExists("git") {
-		fmt.Println("Correct: Git discovered in the system.")
-	} else {
+	if !commandExists("git") {
 		log.Println("Error: Git was not discovered in the system.")
 		os.Exit(0)
 	}
@@ -63,7 +61,7 @@ func installFlutterOnWindows() {
 
 // Install Flutter On Mac
 func installFlutterOnMac() {
-	if isNotExist("/src/flutter") {
+	if isNotExist("/usr/local/flutter") {
 		exec.Command("git", "clone", "git@github.com:flutter/flutter.git", "/usr/local/flutter", "-b stable")
 		ioutil.WriteFile("~/.profile", []byte("export PATH=$PATH:/usr/local/flutter/bin"), 0644)
 		exec.Command("source", "~/.profile")
@@ -75,7 +73,7 @@ func installFlutterOnMac() {
 
 // Install Flutter On Linux
 func installFlutterOnLinux() {
-	if isNotExist("/src/flutter") {
+	if isNotExist("/usr/local/flutter") {
 		exec.Command("git", "clone", "git@github.com:flutter/flutter.git", "/usr/local/flutter", "-b stable")
 		ioutil.WriteFile("~/.profile", []byte("export PATH=$PATH:/usr/local/flutter/bin"), 0644)
 		exec.Command("source", "~/.profile")
