@@ -16,12 +16,14 @@ func main() {
 // System Requirements Check
 func requirementsCheck() {
 	if commandExists("flutter") {
-		log.Println("Error: Flutter found on the system")
+		log.Println("Error: Flutter discovered in the system.")
 		os.Exit(0)
+	}
+	if commandExists("git") {
+		selectOperatingSystem()
 	} else {
-		if commandExists("git") {
-			selectOperatingSystem()
-		}
+		log.Println("Error: Git was not discovered in the system.")
+		os.Exit(0)
 	}
 }
 
@@ -35,7 +37,7 @@ func selectOperatingSystem() {
 	case "linux":
 		installFlutterOnLinux()
 	default:
-		fmt.Printf("Error: %s Not Supported.\n", runtime.GOOS)
+		fmt.Printf("Error: System %s Not Supported.\n", runtime.GOOS)
 	}
 }
 
@@ -45,7 +47,7 @@ func installFlutterOnWindows() {
 		exec.Command("git", "clone", "git@github.com:flutter/flutter.git", "/src/flutter", "-b stable")
 		exec.Command("setx", "path", "/src/flutter/bin")
 	} else {
-		log.Println("Error: Couldn't create project.")
+		log.Println("Error: Failed to build a project.")
 		os.Exit(0)
 	}
 }
@@ -55,8 +57,9 @@ func installFlutterOnMac() {
 	if isNotExist("/usr/local/flutter") {
 		exec.Command("git", "clone", "git@github.com:flutter/flutter.git", "/usr/local/flutter", "-b stable")
 		ioutil.WriteFile("~/.profile", []byte("export PATH=$PATH:/usr/local/flutter/bin"), 0644)
+		exec.Command("source", "~/.profile")
 	} else {
-		log.Println("Error: Couldn't create project.")
+		log.Println("Error: Failed to build a project.")
 		os.Exit(0)
 	}
 }
@@ -66,8 +69,9 @@ func installFlutterOnLinux() {
 	if isNotExist("/usr/local/flutter") {
 		exec.Command("git", "clone", "git@github.com:flutter/flutter.git", "/usr/local/flutter", "-b stable")
 		ioutil.WriteFile("~/.profile", []byte("export PATH=$PATH:/usr/local/flutter/bin"), 0644)
+		exec.Command("source", "~/.profile")
 	} else {
-		log.Println("Error: Couldn't create project.")
+		log.Println("Error: Failed to build a project.")
 		os.Exit(0)
 	}
 }
