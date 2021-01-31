@@ -11,11 +11,11 @@ import (
 )
 
 func main() {
-	requirementsCheck()
+	selectOperatingSystem()
 }
 
 // System Requirements Check
-func requirementsCheck() {
+func commandsRequirementsCheck() {
 	if commandExists("flutter") {
 		log.Println("Error: Flutter discovered in the system.")
 		os.Exit(0)
@@ -24,6 +24,9 @@ func requirementsCheck() {
 		log.Println("Error: Git was not discovered in the system.")
 		os.Exit(0)
 	}
+}
+
+func pathCheck() {
 	data, err := ioutil.ReadFile("~/.profile")
 	fileData := string(data)
 	if strings.Contains(fileData, "flutter") {
@@ -38,10 +41,15 @@ func requirementsCheck() {
 func selectOperatingSystem() {
 	switch runtime.GOOS {
 	case "windows":
+		commandsRequirementsCheck()
 		installFlutterOnWindows()
 	case "darwin":
+		commandsRequirementsCheck()
+		pathCheck()
 		installFlutterOnMac()
 	case "linux":
+		commandsRequirementsCheck()
+		pathCheck()
 		installFlutterOnLinux()
 	default:
 		fmt.Printf("Error: System %s Not Supported.\n", runtime.GOOS)
