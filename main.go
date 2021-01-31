@@ -21,10 +21,18 @@ func requirementsCheck() {
 		os.Exit(0)
 	}
 	if commandExists("git") {
-		selectOperatingSystem()
+		fmt.Println("Correct: Git discovered in the system.")
 	} else {
 		log.Println("Error: Git was not discovered in the system.")
 		os.Exit(0)
+	}
+	data, err := ioutil.ReadFile("~/.profile")
+	fileData := string(data)
+	if strings.Contains(fileData, "flutter") {
+		log.Println("Error: Flutter discovered in your path.", err)
+		os.Exit(0)
+	} else {
+		selectOperatingSystem()
 	}
 }
 
@@ -55,33 +63,25 @@ func installFlutterOnWindows() {
 
 // Install Flutter On Mac
 func installFlutterOnMac() {
-	if isNotExist("/usr/local/flutter") {
-		data, err := ioutil.ReadFile("~/.profile")
-		fileData := string(data)
-		if strings.Contains(fileData, "flutter") {
-			log.Println("Error:", err)
-			os.Exit(0)
-		} else {
-			exec.Command("git", "clone", "git@github.com:flutter/flutter.git", "/usr/local/flutter", "-b stable")
-			ioutil.WriteFile("~/.profile", []byte("export PATH=$PATH:/usr/local/flutter/bin"), 0644)
-			exec.Command("source", "~/.profile")
-		}
+	if isNotExist("/src/flutter") {
+		exec.Command("git", "clone", "git@github.com:flutter/flutter.git", "/usr/local/flutter", "-b stable")
+		ioutil.WriteFile("~/.profile", []byte("export PATH=$PATH:/usr/local/flutter/bin"), 0644)
+		exec.Command("source", "~/.profile")
+	} else {
+		log.Println("Error: Failed to build a project.")
+		os.Exit(0)
 	}
 }
 
 // Install Flutter On Linux
 func installFlutterOnLinux() {
-	if isNotExist("/usr/local/flutter") {
-		data, err := ioutil.ReadFile("~/.profile")
-		fileData := string(data)
-		if strings.Contains(fileData, "flutter") {
-			log.Println("Error:", err)
-			os.Exit(0)
-		} else {
-			exec.Command("git", "clone", "git@github.com:flutter/flutter.git", "/usr/local/flutter", "-b stable")
-			ioutil.WriteFile("~/.profile", []byte("export PATH=$PATH:/usr/local/flutter/bin"), 0644)
-			exec.Command("source", "~/.profile")
-		}
+	if isNotExist("/src/flutter") {
+		exec.Command("git", "clone", "git@github.com:flutter/flutter.git", "/usr/local/flutter", "-b stable")
+		ioutil.WriteFile("~/.profile", []byte("export PATH=$PATH:/usr/local/flutter/bin"), 0644)
+		exec.Command("source", "~/.profile")
+	} else {
+		log.Println("Error: Failed to build a project.")
+		os.Exit(0)
 	}
 }
 
