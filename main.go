@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	//"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -41,47 +42,86 @@ func commandsRequirementsCheck() {
 	}
 }
 
-// Install Flutter on Windows
+// Install Flutter On Windows
 func installFlutterOnWindows() {
-	if isNotExist("flutter") {
-		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
-		cmd.Run()
-		if isNotExist("/src") {
-			os.Mkdir("/src", 0755)
+	// make sure flutter directory is not there
+	if isNotExist("/src/flutter") {
+		// make sure flutter isnt there and clone
+		if isNotExist("flutter") {
+			cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
+			cmd.Run()
+			// make sure /src is there and if its not make the folder
+			if isNotExist("/src") {
+				os.MkdirAll("/src", 0755)
+			} else {
+				log.Println("Error: Failed to build a project.")
+				os.Exit(0)
+			}
+			// move the flutter folder to the correct path
+			os.Rename("flutter", "/src/flutter")
+			os.Setenv("PATH", "/src/flutter/bin")
+		} else {
+			log.Println("Error: Failed to build a project.")
+			os.Exit(0)
 		}
-		os.Rename("flutter", "/src/flutter")
 	} else {
-		log.Println("Error: Failed to build a project.")
+		log.Println("Error: Flutter discovered in the system.")
 		os.Exit(0)
 	}
 }
 
 // Install Flutter On Mac
 func installFlutterOnMac() {
-	if isNotExist("flutter") {
-		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
-		cmd.Run()
-		if isNotExist("/usr/local") {
-			os.Mkdir("/usr/local", 0755)
+	// make sure flutter directory is not there
+	if isNotExist("/usr/local/flutter") {
+		// make sure flutter isnt there and clone
+		if isNotExist("flutter") {
+			cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
+			cmd.Run()
+			// make sure /usr/local is there and if its not make the folder
+			if isNotExist("/usr/local") {
+				os.MkdirAll("/usr/local", 0755)
+			} else {
+				log.Println("Error: Failed to build a project.")
+				os.Exit(0)
+			}
+			// move the flutter folder to the correct path
+			os.Rename("flutter", "/usr/local/flutter")
+			os.Setenv("PATH", "export PATH=$PATH:/usr/local/flutter/bin")
+		} else {
+			log.Println("Error: Failed to build a project.")
+			os.Exit(0)
 		}
-		os.Rename("flutter", "/usr/local/flutter")
 	} else {
-		log.Println("Error: Failed to build a project.")
+		log.Println("Error: Flutter discovered in the system.")
 		os.Exit(0)
 	}
 }
 
 // Install Flutter On Linux
 func installFlutterOnLinux() {
-	if isNotExist("flutter") {
-		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
-		cmd.Run()
-		if isNotExist("/usr/local") {
-			os.Mkdir("/usr/local", 0755)
+	// make sure flutter directory is not there
+	if isNotExist("/usr/local/flutter") {
+		// make sure flutter isnt there and clone
+		if isNotExist("flutter") {
+			cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
+			cmd.Run()
+			// make sure /usr/local is there and if its not make the folder
+			if isNotExist("/usr/local") {
+				os.MkdirAll("/usr/local", 0755)
+			} else {
+				log.Println("Error: Failed to build a project.")
+				os.Exit(0)
+			}
+			// move the flutter folder to the correct path
+			os.Rename("flutter", "/usr/local/flutter")
+			os.Setenv("PATH", "export PATH=$PATH:/usr/local/flutter/bin")
+		} else {
+			log.Println("Error: Failed to build a project.")
+			os.Exit(0)
 		}
-		os.Rename("flutter", "/usr/local/flutter")
 	} else {
-		log.Println("Error: Failed to build a project.")
+		log.Println("Error: Flutter discovered in the system.")
 		os.Exit(0)
 	}
 }
