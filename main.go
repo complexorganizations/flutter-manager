@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	//"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -45,7 +45,11 @@ func commandsRequirementsCheck() {
 // Install Flutter on Windows
 func installFlutterOnWindows() {
 	if isNotExist("/src/flutter") {
-		//
+		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
+		err := cmd.Run()
+		if err != nil {
+			log.Println(err)
+		}
 	} else {
 		log.Println("Error: Failed to build a project.")
 		os.Exit(0)
@@ -55,7 +59,11 @@ func installFlutterOnWindows() {
 // Install Flutter On Mac
 func installFlutterOnMac() {
 	if isNotExist("/usr/local/flutter") {
-		//
+		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
+		err := cmd.Run()
+		if err != nil {
+			log.Println(err)
+		}
 	} else {
 		log.Println("Error: Failed to build a project.")
 		os.Exit(0)
@@ -65,7 +73,11 @@ func installFlutterOnMac() {
 // Install Flutter On Linux
 func installFlutterOnLinux() {
 	if isNotExist("/usr/local/flutter") {
-		//
+		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
+		err := cmd.Run()
+		if err != nil {
+			log.Println(err)
+		}
 	} else {
 		log.Println("Error: Failed to build a project.")
 		os.Exit(0)
