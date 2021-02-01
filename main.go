@@ -52,7 +52,7 @@ func installFlutterOnWindows() {
 			cmd.Run()
 			// make sure /src is there and if its not make the folder
 			if isNotExist("/src") {
-				os.MkdirAll("/src", 0755)
+				os.Mkdir("/src", 0755)
 			} else {
 				log.Println("Error: Failed to build a project.")
 				os.Exit(0)
