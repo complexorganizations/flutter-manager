@@ -26,13 +26,6 @@ func commandsRequirementsCheck() {
 	}
 }
 
-func pathCheck() {
-	if strings.Contains(os.LookupEnv("PATH"), "flutter") {
-		log.Println("Error: Flutter discovered in your path.")
-		os.Exit(0)
-	}
-}
-
 // Choose OS to install flutter
 func selectOperatingSystem() {
 	switch runtime.GOOS {
@@ -41,11 +34,9 @@ func selectOperatingSystem() {
 		installFlutterOnWindows()
 	case "darwin":
 		commandsRequirementsCheck()
-		pathCheck()
 		installFlutterOnMac()
 	case "linux":
 		commandsRequirementsCheck()
-		pathCheck()
 		installFlutterOnLinux()
 	default:
 		fmt.Printf("Error: System %s Not Supported.\n", runtime.GOOS)
