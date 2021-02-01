@@ -30,7 +30,6 @@ func pathCheck() {
 	if strings.Contains(os.LookupEnv("PATH"), "flutter") {
 		log.Println("Error: Flutter discovered in your path.")
 		os.Exit(0)
-		log.Fatal(err)
 	}
 }
 
