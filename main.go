@@ -27,7 +27,7 @@ func commandsRequirementsCheck() {
 }
 
 func pathCheck() {
-	data, err := ioutil.ReadFile("~/.profile")
+	data, err := ioutil.ReadFile(os.LookupEnv("PATH"))
 	fileData := string(data)
 	if strings.Contains(fileData, "flutter") {
 		log.Println("Error: Flutter discovered in your path.")
