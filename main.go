@@ -47,6 +47,8 @@ func installFlutterOnWindows() {
 	if isNotExist("/src/flutter") {
 		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
 		err := cmd.Run()
+		cmd = exec.Command("setx", "path", "/src/flutter/bin")
+		err = cmd.Run()
 		if err != nil {
 			log.Println(err)
 		}
