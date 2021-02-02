@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
+	"strings"
 )
 
 func main() {
@@ -37,6 +38,15 @@ func commandsRequirementsCheck() {
 	}
 	if !commandExists("git") {
 		log.Println("Error: Git was not discovered in the system.")
+		os.Exit(0)
+	}
+}
+
+func checkSystemPath() {
+	data, err := ioutil.ReadAll(os.Environ())
+	fileData := string(data)
+	if strings.Contains(fileData, "flutter") {
+		log.Println("Error: Flutter was discovered in the system.")
 		os.Exit(0)
 	}
 }
