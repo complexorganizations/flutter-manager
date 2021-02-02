@@ -60,7 +60,6 @@ func installFlutterOnWindows() {
 			os.Rename("flutter", "/src/flutter")
 			cmd = exec.Command("setx", "path", "/src/flutter/bin")
 			cmd.Run()
-			//os.Setenv("PATH", "/src/flutter/bin")
 		} else {
 			log.Println("Error: Failed to build a project.")
 			os.Exit(0)
