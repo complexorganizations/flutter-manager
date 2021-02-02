@@ -58,7 +58,9 @@ func installFlutterOnWindows() {
 			}
 			// move the flutter folder to the correct path
 			os.Rename("flutter", "/src/flutter")
-			os.Setenv("PATH", "/src/flutter/bin")
+			cmd = exec.Command("setx", "path", "/src/flutter/bin")
+			cmd.Run()
+			//os.Setenv("PATH", "/src/flutter/bin")
 		} else {
 			log.Println("Error: Failed to build a project.")
 			os.Exit(0)
@@ -86,7 +88,10 @@ func installFlutterOnMac() {
 			}
 			// move the flutter folder to the correct path
 			os.Rename("flutter", "/usr/local/flutter")
-			os.Setenv("PATH", "export PATH=$PATH:/usr/local/flutter/bin")
+			cmd = exec.Command("echo", "export PATH=$PATH:/usr/local/flutter/bin", ">>", "~/.profile")
+			cmd.Run()
+			cmd = exec.Command("source", "~/.profile")
+			cmd.Run()
 		} else {
 			log.Println("Error: Failed to build a project.")
 			os.Exit(0)
@@ -114,7 +119,10 @@ func installFlutterOnLinux() {
 			}
 			// move the flutter folder to the correct path
 			os.Rename("flutter", "/usr/local/flutter")
-			os.Setenv("PATH", "export PATH=$PATH:/usr/local/flutter/bin")
+			cmd = exec.Command("echo", "export PATH=$PATH:/usr/local/flutter/bin", ">>", "~/.profile")
+			cmd.Run()
+			cmd = exec.Command("source", "~/.profile")
+			cmd.Run()
 		} else {
 			log.Println("Error: Failed to build a project.")
 			os.Exit(0)
