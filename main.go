@@ -50,8 +50,8 @@ func installFlutterOnWindows() {
 			cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
 			cmd.Run()
 			// make sure /src is there and if its not make the folder
-			if isNotExist("/src") {
-				os.Mkdir("/src", 0755)
+			if isNotExist("/src/") {
+				os.Mkdir("/src/", 0755)
 			} else {
 				log.Println("Error: Failed to build a project.")
 				os.Exit(0)
@@ -79,8 +79,8 @@ func installFlutterOnMac() {
 			cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
 			cmd.Run()
 			// make sure /usr/local is there and if its not make the folder
-			if isNotExist("/src") {
-				os.MkdirAll("/src", 0755)
+			if isNotExist("/src/") {
+				os.MkdirAll("/src/", 0755)
 			} else {
 				log.Println("Error: Failed to build a project.")
 				os.Exit(0)
@@ -106,8 +106,8 @@ func installFlutterOnLinux() {
 			cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
 			cmd.Run()
 			// make sure /usr/local is there and if its not make the folder
-			if isNotExist("/src") {
-				os.MkdirAll("/src", 0755)
+			if isNotExist("/src/") {
+				os.MkdirAll("/src/", 0755)
 			} else {
 				log.Println("Error: Failed to build a project.")
 				os.Exit(0)
