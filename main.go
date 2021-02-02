@@ -44,7 +44,8 @@ func commandsRequirementsCheck() {
 }
 
 func checkSystemPath() {
-	data, err := ioutil.ReadAll(os.Environ())
+	path := strings.NewReader(os.Environ())
+	data, err := ioutil.ReadAll(path)
 	fileData := string(data)
 	if strings.Contains(fileData, "flutter") {
 		log.Println("Error: Flutter was discovered in the system.")
