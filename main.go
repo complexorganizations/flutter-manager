@@ -74,21 +74,21 @@ func installFlutterOnWindows() {
 // Install Flutter On Mac
 func installFlutterOnMac() {
 	// make sure flutter directory is not there
-	if isNotExist("/usr/local/flutter") {
+	if isNotExist("/src/flutter") {
 		// make sure flutter isnt there and clone
 		if isNotExist("flutter") {
 			cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
 			cmd.Run()
 			// make sure /usr/local is there and if its not make the folder
-			if isNotExist("/usr/local") {
-				os.MkdirAll("/usr/local", 0755)
+			if isNotExist("/src") {
+				os.MkdirAll("/src", 0755)
 			} else {
 				log.Println("Error: Failed to build a project.")
 				os.Exit(0)
 			}
 			// move the flutter folder to the correct path
-			os.Rename("flutter", "/usr/local/flutter")
-			cmd = exec.Command("echo", "export PATH=$PATH:/usr/local/flutter/bin", ">>", "~/.profile")
+			os.Rename("flutter", "/src/flutter")
+			cmd = exec.Command("echo", "export PATH=$PATH:/src/flutter/bin", ">>", "~/.profile")
 			cmd.Run()
 			cmd = exec.Command("source", "~/.profile")
 			cmd.Run()
@@ -105,21 +105,21 @@ func installFlutterOnMac() {
 // Install Flutter On Linux
 func installFlutterOnLinux() {
 	// make sure flutter directory is not there
-	if isNotExist("/usr/local/flutter") {
+	if isNotExist("/src/flutter") {
 		// make sure flutter isnt there and clone
 		if isNotExist("flutter") {
 			cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
 			cmd.Run()
 			// make sure /usr/local is there and if its not make the folder
-			if isNotExist("/usr/local") {
-				os.MkdirAll("/usr/local", 0755)
+			if isNotExist("/src") {
+				os.MkdirAll("/src", 0755)
 			} else {
 				log.Println("Error: Failed to build a project.")
 				os.Exit(0)
 			}
 			// move the flutter folder to the correct path
-			os.Rename("flutter", "/usr/local/flutter")
-			cmd = exec.Command("echo", "export PATH=$PATH:/usr/local/flutter/bin", ">>", "~/.profile")
+			os.Rename("flutter", "/src/flutter")
+			cmd = exec.Command("echo", "export PATH=$PATH:/src/flutter/bin", ">>", "~/.profile")
 			cmd.Run()
 			cmd = exec.Command("source", "~/.profile")
 			cmd.Run()
