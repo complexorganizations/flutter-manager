@@ -32,7 +32,7 @@ func selectOperatingSystem() {
 // System Requirements Check
 func commandsRequirementsCheck() {
 	if commandExists("flutter") {
-		log.Println("Error: Flutter discovered in the system.")
+		log.Println("Error: Flutter command discovered in the system.")
 		os.Exit(0)
 	}
 	if !commandExists("git") {
@@ -53,7 +53,7 @@ func installFlutterOnWindows() {
 			if isNotExist("/src/") {
 				os.Mkdir("/src/", 0755)
 			} else {
-				log.Println("Error: Failed to build a project.")
+				log.Println("Error: Failed to create /src/ folder.")
 				os.Exit(0)
 			}
 			// move the flutter folder to the correct path
@@ -61,11 +61,11 @@ func installFlutterOnWindows() {
 			cmd = exec.Command("setx", "path", "/src/flutter/bin")
 			cmd.Run()
 		} else {
-			log.Println("Error: Failed to build a project.")
+			log.Println("Error: Failed to create ./flutter folder.")
 			os.Exit(0)
 		}
 	} else {
-		log.Println("Error: Flutter discovered in the system.")
+		log.Println("Error: Flutter discovered in /src/flutter.")
 		os.Exit(0)
 	}
 }
@@ -80,9 +80,9 @@ func installFlutterOnMac() {
 			cmd.Run()
 			// make sure /usr/local is there and if its not make the folder
 			if isNotExist("/src/") {
-				os.MkdirAll("/src/", 0755)
+				os.Mkdir("/src/", 0755)
 			} else {
-				log.Println("Error: Failed to build a project.")
+				log.Println("Error: Failed to create /src/ folder.")
 				os.Exit(0)
 			}
 			// move the flutter folder to the correct path
@@ -91,14 +91,15 @@ func installFlutterOnMac() {
 			path.Write([]byte("export PATH=$PATH:/src/flutter/bin\n"))
 			path.Close()
 			if err != nil {
-				log.Fatal(err)
+				log.Println("Error: Failed to write path /etc/profile.")
+				os.Exit(0)
 			}
 		} else {
-			log.Println("Error: Failed to build a project.")
+			log.Println("Error: Failed to create ./flutter folder.")
 			os.Exit(0)
 		}
 	} else {
-		log.Println("Error: Flutter discovered in the system.")
+		log.Println("Error: Flutter discovered in /src/flutter.")
 		os.Exit(0)
 	}
 }
@@ -113,9 +114,9 @@ func installFlutterOnLinux() {
 			cmd.Run()
 			// make sure /usr/local is there and if its not make the folder
 			if isNotExist("/src/") {
-				os.MkdirAll("/src/", 0755)
+				os.Mkdir("/src/", 0755)
 			} else {
-				log.Println("Error: Failed to build a project.")
+				log.Println("Error: Failed to create /src/ folder.")
 				os.Exit(0)
 			}
 			// move the flutter folder to the correct path
@@ -124,14 +125,15 @@ func installFlutterOnLinux() {
 			path.Write([]byte("export PATH=$PATH:/src/flutter/bin\n"))
 			path.Close()
 			if err != nil {
-				log.Fatal(err)
+				log.Println("Error: Failed to write path /etc/profile.")
+				os.Exit(0)
 			}
 		} else {
-			log.Println("Error: Failed to build a project.")
+			log.Println("Error: Failed to create ./flutter folder.")
 			os.Exit(0)
 		}
 	} else {
-		log.Println("Error: Flutter discovered in the system.")
+		log.Println("Error: Flutter discovered in /src/flutter.")
 		os.Exit(0)
 	}
 }
