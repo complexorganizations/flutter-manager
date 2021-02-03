@@ -58,27 +58,23 @@ func commandsRequirementsCheck() {
 func gitCloneFlutter() {
 	if !folderExists(systemTempFolder) {
 		os.Mkdir(systemTempFolder, 0755)
-		if folderExists(tempFlutterPath) {
-			os.Chdir(systemTempFolder)
-			cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
-			cmd.Run()
-			os.Mkdir(flutterSource, 0755)
-			os.Rename(tempFlutterPath, flutterPath)
-		}
+		os.Chdir(systemTempFolder)
+		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
+		cmd.Run()
+		os.Mkdir(flutterSource, 0755)
+		os.Rename(tempFlutterPath, flutterPath)
 	} else {
-		if folderExists(tempFlutterPath) {
-			os.Chdir(systemTempFolder)
-			cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
-			cmd.Run()
-			os.Mkdir(flutterSource, 0755)
-			os.Rename(tempFlutterPath, flutterPath)
-		}
+		os.Chdir(systemTempFolder)
+		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
+		cmd.Run()
+		os.Mkdir(flutterSource, 0755)
+		os.Rename(tempFlutterPath, flutterPath)
 	}
 }
 
 // Install Flutter On Windows
 func installFlutterOnWindows() {
-	if !folderExists(flutterPath) {
+	if folderExists(flutterPath) {
 		cmd := exec.Command("setx", "path", flutterBin)
 		cmd.Run()
 	}
@@ -86,7 +82,7 @@ func installFlutterOnWindows() {
 
 // Install Flutter On Mac
 func installFlutterOnMac() {
-	if !folderExists(flutterPath) {
+	if folderExists(flutterPath) {
 		path, err := os.OpenFile("/etc/profile", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 		path.Write([]byte("export PATH=$PATH:/src/flutter/bin\n"))
 		path.Close()
@@ -99,7 +95,7 @@ func installFlutterOnMac() {
 
 // Install Flutter On Linux
 func installFlutterOnLinux() {
-	if !folderExists(flutterPath) {
+	if folderExists(flutterPath) {
 		path, err := os.OpenFile("/etc/profile", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 		path.Write([]byte("export PATH=$PATH:/src/flutter/bin\n"))
 		path.Close()
@@ -112,30 +108,32 @@ func installFlutterOnLinux() {
 
 func fixPermissions() {
 	filepath.Walk(flutterPath, func(path string, info os.FileInfo, err error) error {
-		if !folderExists(path) {
+		if folderExists(path) {
 			os.Chmod(path, 0755)
 		}
-		if !fileExists(path) {
+		if fileExists(path) {
 			os.Chmod(path, 0644)
 		}
 		return nil
 	})
 }
 
+// Check if a file exists
 func fileExists(filename string) bool {
-    info, err := os.Stat(filename)
-    if os.IsNotExist(err) {
-        return false
-    }
-    return !info.IsDir()
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return !info.IsDir()
 }
 
+// Check if a folder exists
 func folderExists(foldername string) bool {
-    info, err := os.Stat(foldername)
-    if os.IsNotExist(err) {
-        return false
-    }
-    return info.IsDir()
+	info, err := os.Stat(foldername)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return info.IsDir()
 }
 
 // Check if a command exists
