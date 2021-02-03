@@ -76,7 +76,7 @@ func gitCloneFlutter() {
 // Install Flutter On Windows
 func installFlutterOnWindows() {
 	if !isNotExist(flutterPath) {
-		cmd = exec.Command("setx", "path", flutterBin)
+		cmd := exec.Command("setx", "path", flutterBin)
 		cmd.Run()
 	}
 }
