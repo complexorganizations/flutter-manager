@@ -31,12 +31,10 @@ func selectOperatingSystem() {
 		commandsRequirementsCheck()
 		gitCloneFlutter()
 		installFlutterOnMac()
-		fixPermissions()
 	case "linux":
 		commandsRequirementsCheck()
 		gitCloneFlutter()
 		installFlutterOnLinux()
-		fixPermissions()
 	default:
 		fmt.Printf("Error: System %s Not Supported.\n", runtime.GOOS)
 	}
@@ -103,21 +101,6 @@ func installFlutterOnLinux() {
 			os.Exit(0)
 		}
 	}
-}
-
-// Fix the permission
-func fixPermissions() {
-	cmd := exec.Command("sudo", "chown", "-R", "$USER", flutterPath)
-	cmd.Run()
-}
-
-// Check if a file exists
-func fileExists(filename string) bool {
-	info, err := os.Stat(filename)
-	if os.IsNotExist(err) {
-		return false
-	}
-	return !info.IsDir()
 }
 
 // Check if a folder exists
