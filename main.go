@@ -106,6 +106,7 @@ func installFlutterOnLinux() {
 	}
 }
 
+// Fix the permission
 func fixPermissions() {
 	filepath.Walk(flutterPath, func(path string, info os.FileInfo, err error) error {
 		if folderExists(path) {
