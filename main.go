@@ -52,6 +52,7 @@ func commandsRequirementsCheck() {
 	}
 }
 
+// git clone flutter
 func gitCloneFlutter() {
 	if !folderExists(systemTempFolder) {
 		os.Mkdir(systemTempFolder, 0755)
