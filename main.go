@@ -5,7 +5,6 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"runtime"
 )
 
@@ -108,11 +107,8 @@ func installFlutterOnLinux() {
 
 // Fix the permission
 func fixPermissions() {
-	filepath.Walk(flutterPath, func(path string, info os.FileInfo, err error) error {
-		cmd := exec.Command("chown", "-R", "$USER", "/src/flutter")
-		cmd.Run()
-		return nil
-	})
+	cmd := exec.Command("chown", "-R", "$USER", flutterPath)
+	cmd.Run()
 }
 
 // Check if a file exists
