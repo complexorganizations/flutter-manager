@@ -88,7 +88,7 @@ func installFlutterOnMac() {
 		path.Write([]byte("export PATH=$PATH:/src/flutter/bin\n"))
 		path.Close()
 		if err != nil {
-			log.Println("Error: Failed to write path /etc/profile.")
+			log.Println("Error: Failed to write system path.")
 			os.Exit(0)
 		}
 	}
@@ -101,7 +101,7 @@ func installFlutterOnLinux() {
 		path.Write([]byte("export PATH=$PATH:/src/flutter/bin\n"))
 		path.Close()
 		if err != nil {
-			log.Println("Error: Failed to write path /etc/profile.")
+			log.Println("Error: Failed to write system path.")
 			os.Exit(0)
 		}
 	}
