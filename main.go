@@ -8,6 +8,13 @@ import (
 	"runtime"
 )
 
+var (
+	flutterSource = "/src/"
+	flutterPath = "/src/flutter"
+	flutterBin = "/src/flutter/bin"
+	//flutterTempFolder = "/tmp/flutter"
+)
+
 func main() {
 	selectOperatingSystem()
 }
@@ -44,28 +51,28 @@ func commandsRequirementsCheck() {
 // Install Flutter On Windows
 func installFlutterOnWindows() {
 	// make sure flutter directory is not there
-	if isNotExist("/src/flutter") {
+	if isNotExist(flutterPath) {
 		// make sure flutter isnt there and clone
 		if isNotExist("flutter") {
 			cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
 			cmd.Run()
 			// make sure /src is there and if its not make the folder
-			if isNotExist("/src/") {
-				os.Mkdir("/src/", 0755)
+			if isNotExist(flutterSource) {
+				os.Mkdir(flutterSource, 0755)
 			} else {
 				log.Println("Error: Failed to create /src/ folder.")
 				os.Exit(0)
 			}
 			// move the flutter folder to the correct path
-			os.Rename("flutter", "/src/flutter")
-			cmd = exec.Command("setx", "path", "/src/flutter/bin")
+			os.Rename("flutter", flutterPath)
+			cmd = exec.Command("setx", "path", flutterBin)
 			cmd.Run()
 		} else {
 			log.Println("Error: Failed to create ./flutter folder.")
 			os.Exit(0)
 		}
 	} else {
-		log.Println("Error: Flutter discovered in /src/flutter.")
+		log.Println("Error: Flutter discovered in", flutterPath)
 		os.Exit(0)
 	}
 }
