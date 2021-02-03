@@ -107,7 +107,7 @@ func installFlutterOnLinux() {
 
 // Fix the permission
 func fixPermissions() {
-	cmd := exec.Command("chown", "-R", "$USER", flutterPath)
+	cmd := exec.Command("sudo", "chown", "-R", "$USER", flutterPath)
 	cmd.Run()
 }
 
