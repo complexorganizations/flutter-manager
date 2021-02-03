@@ -3,6 +3,8 @@
 ---
 ### Features
 - Install Flutter ***Windows, Mac, Linux***
+- Manage Flutter ***Coming Soon***
+- Uninstall Flutter ***Coming Soon***
 
 #### How to use Flutter manager?
 Download the latest flutter-manager binary
@@ -17,7 +19,7 @@ flutter-manager
 ### Q&A
 
 Why use this?
-- Save time
+- Save time, Deploy across multiple systems within seconds.
 
 ---
 ### Author
