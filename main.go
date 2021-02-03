@@ -9,10 +9,11 @@ import (
 )
 
 var (
-	flutterSource = "/src/"
-	flutterPath = "/src/flutter"
-	flutterBin = "/src/flutter/bin"
-	//flutterTempFolder = "/tmp/flutter"
+	flutterSource    = "/src/"
+	flutterPath      = "/src/flutter/"
+	flutterBin       = "/src/flutter/bin/"
+	systemTempFolder = "/tmp/"
+	tempFlutterPath  = "/tmp/flutter/"
 )
 
 func main() {
@@ -24,12 +25,15 @@ func selectOperatingSystem() {
 	switch runtime.GOOS {
 	case "windows":
 		commandsRequirementsCheck()
+		gitCloneFlutter()
 		installFlutterOnWindows()
 	case "darwin":
 		commandsRequirementsCheck()
+		gitCloneFlutter()
 		installFlutterOnMac()
 	case "linux":
 		commandsRequirementsCheck()
+		gitCloneFlutter()
 		installFlutterOnLinux()
 	default:
 		fmt.Printf("Error: System %s Not Supported.\n", runtime.GOOS)
@@ -48,100 +52,58 @@ func commandsRequirementsCheck() {
 	}
 }
 
-// Install Flutter On Windows
-func installFlutterOnWindows() {
-	// make sure flutter directory is not there
-	if isNotExist(flutterPath) {
-		// make sure flutter isnt there and clone
-		if isNotExist("flutter") {
+func gitCloneFlutter() {
+	if isNotExist(systemTempFolder) {
+		os.Mkdir(systemTempFolder, 0755)
+		if isNotExist(tempFlutterPath) {
+			os.Chdir(systemTempFolder)
 			cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
 			cmd.Run()
-			// make sure /src is there and if its not make the folder
-			if isNotExist(flutterSource) {
-				os.Mkdir(flutterSource, 0755)
-			} else {
-				log.Println("Error: Failed to create /src/ folder.")
-				os.Exit(0)
-			}
-			// move the flutter folder to the correct path
-			os.Rename("flutter", flutterPath)
-			cmd = exec.Command("setx", "path", flutterBin)
-			cmd.Run()
-		} else {
-			log.Println("Error: Failed to create ./flutter folder.")
-			os.Exit(0)
+			os.Mkdir(flutterSource, 0755)
+			os.Rename(tempFlutterPath, flutterPath)
 		}
 	} else {
-		log.Println("Error: Flutter discovered in", flutterPath)
-		os.Exit(0)
+		os.Chdir(systemTempFolder)
+		if isNotExist(tempFlutterPath) {
+			cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
+			cmd.Run()
+			os.Mkdir(flutterSource, 0755)
+			os.Rename(tempFlutterPath, flutterPath)
+		}
+	}
+}
+
+// Install Flutter On Windows
+func installFlutterOnWindows() {
+	if !isNotExist(flutterPath) {
+		cmd = exec.Command("setx", "path", flutterBin)
+		cmd.Run()
 	}
 }
 
 // Install Flutter On Mac
 func installFlutterOnMac() {
-	// make sure flutter directory is not there
-	if isNotExist("/src/flutter") {
-		// make sure flutter isnt there and clone
-		if isNotExist("flutter") {
-			cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
-			cmd.Run()
-			// make sure /usr/local is there and if its not make the folder
-			if isNotExist("/src/") {
-				os.Mkdir("/src/", 0755)
-			} else {
-				log.Println("Error: Failed to create /src/ folder.")
-				os.Exit(0)
-			}
-			// move the flutter folder to the correct path
-			os.Rename("flutter", "/src/flutter")
-			path, err := os.OpenFile("/etc/profile", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-			path.Write([]byte("export PATH=$PATH:/src/flutter/bin\n"))
-			path.Close()
-			if err != nil {
-				log.Println("Error: Failed to write path /etc/profile.")
-				os.Exit(0)
-			}
-		} else {
-			log.Println("Error: Failed to create ./flutter folder.")
+	if !isNotExist(flutterPath) {
+		path, err := os.OpenFile("/etc/profile", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		path.Write([]byte("export PATH=$PATH:/src/flutter/bin\n"))
+		path.Close()
+		if err != nil {
+			log.Println("Error: Failed to write path /etc/profile.")
 			os.Exit(0)
 		}
-	} else {
-		log.Println("Error: Flutter discovered in /src/flutter.")
-		os.Exit(0)
 	}
 }
 
 // Install Flutter On Linux
 func installFlutterOnLinux() {
-	// make sure flutter directory is not there
-	if isNotExist("/src/flutter") {
-		// make sure flutter isnt there and clone
-		if isNotExist("flutter") {
-			cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
-			cmd.Run()
-			// make sure /usr/local is there and if its not make the folder
-			if isNotExist("/src/") {
-				os.Mkdir("/src/", 0755)
-			} else {
-				log.Println("Error: Failed to create /src/ folder.")
-				os.Exit(0)
-			}
-			// move the flutter folder to the correct path
-			os.Rename("flutter", "/src/flutter")
-			path, err := os.OpenFile("/etc/profile", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-			path.Write([]byte("export PATH=$PATH:/src/flutter/bin\n"))
-			path.Close()
-			if err != nil {
-				log.Println("Error: Failed to write path /etc/profile.")
-				os.Exit(0)
-			}
-		} else {
-			log.Println("Error: Failed to create ./flutter folder.")
+	if !isNotExist(flutterPath) {
+		path, err := os.OpenFile("/etc/profile", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		path.Write([]byte("export PATH=$PATH:/src/flutter/bin\n"))
+		path.Close()
+		if err != nil {
+			log.Println("Error: Failed to write path /etc/profile.")
 			os.Exit(0)
 		}
-	} else {
-		log.Println("Error: Flutter discovered in /src/flutter.")
-		os.Exit(0)
 	}
 }
 
