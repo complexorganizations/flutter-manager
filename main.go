@@ -87,7 +87,7 @@ func installFlutterOnMac() {
 			}
 			// move the flutter folder to the correct path
 			os.Rename("flutter", "/src/flutter")
-			path, err := os.OpenFile("access.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+			path, err := os.OpenFile("/etc/profile", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -125,7 +125,7 @@ func installFlutterOnLinux() {
 			}
 			// move the flutter folder to the correct path
 			os.Rename("flutter", "/src/flutter")
-			path, err := os.OpenFile("access.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+			path, err := os.OpenFile("/etc/profile", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 			if err != nil {
 				log.Fatal(err)
 			}
