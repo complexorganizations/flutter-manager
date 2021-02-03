@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"path/filepath"
 	"os/exec"
+	"path/filepath"
 	"runtime"
 )
 
@@ -56,9 +56,9 @@ func commandsRequirementsCheck() {
 }
 
 func gitCloneFlutter() {
-	if isNotExist(systemTempFolder) {
+	if !folderExists(systemTempFolder) {
 		os.Mkdir(systemTempFolder, 0755)
-		if isNotExist(tempFlutterPath) {
+		if folderExists(tempFlutterPath) {
 			os.Chdir(systemTempFolder)
 			cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
 			cmd.Run()
@@ -66,8 +66,8 @@ func gitCloneFlutter() {
 			os.Rename(tempFlutterPath, flutterPath)
 		}
 	} else {
-		os.Chdir(systemTempFolder)
-		if isNotExist(tempFlutterPath) {
+		if folderExists(tempFlutterPath) {
+			os.Chdir(systemTempFolder)
 			cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
 			cmd.Run()
 			os.Mkdir(flutterSource, 0755)
@@ -78,7 +78,7 @@ func gitCloneFlutter() {
 
 // Install Flutter On Windows
 func installFlutterOnWindows() {
-	if !isNotExist(flutterPath) {
+	if !folderExists(flutterPath) {
 		cmd := exec.Command("setx", "path", flutterBin)
 		cmd.Run()
 	}
@@ -86,7 +86,7 @@ func installFlutterOnWindows() {
 
 // Install Flutter On Mac
 func installFlutterOnMac() {
-	if !isNotExist(flutterPath) {
+	if !folderExists(flutterPath) {
 		path, err := os.OpenFile("/etc/profile", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 		path.Write([]byte("export PATH=$PATH:/src/flutter/bin\n"))
 		path.Close()
@@ -99,7 +99,7 @@ func installFlutterOnMac() {
 
 // Install Flutter On Linux
 func installFlutterOnLinux() {
-	if !isNotExist(flutterPath) {
+	if !folderExists(flutterPath) {
 		path, err := os.OpenFile("/etc/profile", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 		path.Write([]byte("export PATH=$PATH:/src/flutter/bin\n"))
 		path.Close()
@@ -112,20 +112,30 @@ func installFlutterOnLinux() {
 
 func fixPermissions() {
 	filepath.Walk(flutterPath, func(path string, info os.FileInfo, err error) error {
-		//os.Chmod("folder", 0755)
-		//os.Chmod("file", 0644)
+		if !folderExists(path) {
+			os.Chmod(path, 0755)
+		}
+		if !fileExists(path) {
+			os.Chmod(path, 0644)
+		}
 		return nil
 	})
 }
 
+func fileExists(filename string) bool {
+    info, err := os.Stat(filename)
+    if os.IsNotExist(err) {
+        return false
+    }
+    return !info.IsDir()
+}
 
-// Check if a directory exists
-func isNotExist(filename string) bool {
-	info, err := os.Stat(filename)
-	if os.IsNotExist(err) {
-		return true
-	}
-	return !info.IsDir()
+func folderExists(foldername string) bool {
+    info, err := os.Stat(foldername)
+    if os.IsNotExist(err) {
+        return false
+    }
+    return info.IsDir()
 }
 
 // Check if a command exists
