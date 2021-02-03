@@ -111,8 +111,7 @@ func fixPermissions() {
 	filepath.Walk(flutterPath, func(path string, info os.FileInfo, err error) error {
 		if folderExists(path) {
 			os.Chmod(path, 0755)
-		}
-		if fileExists(path) {
+		} else if fileExists(path) {
 			os.Chmod(path, 0644)
 		}
 		return nil
