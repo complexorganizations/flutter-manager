@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"os/exec"
 	"runtime"
 )
@@ -31,10 +32,12 @@ func selectOperatingSystem() {
 		commandsRequirementsCheck()
 		gitCloneFlutter()
 		installFlutterOnMac()
+		fixPermissions()
 	case "linux":
 		commandsRequirementsCheck()
 		gitCloneFlutter()
 		installFlutterOnLinux()
+		fixPermissions()
 	default:
 		fmt.Printf("Error: System %s Not Supported.\n", runtime.GOOS)
 	}
@@ -106,6 +109,15 @@ func installFlutterOnLinux() {
 		}
 	}
 }
+
+func fixPermissions() {
+	filepath.Walk(flutterPath, func(path string, info os.FileInfo, err error) error {
+		//os.Chmod("folder", 0755)
+		//os.Chmod("file", 0644)
+		return nil
+	})
+}
+
 
 // Check if a directory exists
 func isNotExist(filename string) bool {
