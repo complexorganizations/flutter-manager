@@ -50,6 +50,10 @@ func commandsRequirementsCheck() {
 		log.Println("Error: Git was not discovered in the system.")
 		os.Exit(0)
 	}
+	if !commandExists("google-chrome") {
+		log.Println("Error: Google Chrome was not discovered in the system.")
+		os.Exit(0)
+	}
 }
 
 // git clone flutter
