@@ -26,7 +26,7 @@ func selectOperatingSystem() {
 	case "windows":
 		commandsRequirementsCheck()
 		gitCloneFlutter()
-		installFlutterOnWindows()
+		//installFlutterOnWindows()
 	case "darwin":
 		commandsRequirementsCheck()
 		gitCloneFlutter()
@@ -48,10 +48,6 @@ func commandsRequirementsCheck() {
 	}
 	if !commandExists("git") {
 		log.Println("Error: Git was not discovered in the system.")
-		os.Exit(0)
-	}
-	if !commandExists("google-chrome") {
-		log.Println("Error: Google Chrome was not discovered in the system.")
 		os.Exit(0)
 	}
 }
