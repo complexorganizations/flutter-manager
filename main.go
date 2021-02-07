@@ -26,7 +26,7 @@ func selectOperatingSystem() {
 	case "windows":
 		commandsRequirementsCheck()
 		gitCloneFlutter()
-		//installFlutterOnWindows()
+		installFlutterOnWindows()
 	case "darwin":
 		commandsRequirementsCheck()
 		gitCloneFlutter()
@@ -74,7 +74,12 @@ func gitCloneFlutter() {
 func installFlutterOnWindows() {
 	if folderExists(flutterPath) {
 		cmd := exec.Command("setx", "path", flutterBin)
-		cmd.Run()
+		err := cmd.Run()
+		if err != nil {
+			log.Println("Error: Failed to write system path.")
+			os.RemoveAll(flutterPath)
+			os.Exit(0)
+		}
 	}
 }
 
@@ -86,6 +91,7 @@ func installFlutterOnMac() {
 		path.Close()
 		if err != nil {
 			log.Println("Error: Failed to write system path.")
+			os.RemoveAll(flutterPath)
 			os.Exit(0)
 		}
 	}
@@ -99,6 +105,7 @@ func installFlutterOnLinux() {
 		path.Close()
 		if err != nil {
 			log.Println("Error: Failed to write system path.")
+			os.RemoveAll(flutterPath)
 			os.Exit(0)
 		}
 	}
