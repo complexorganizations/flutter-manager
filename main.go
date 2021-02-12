@@ -122,6 +122,9 @@ func folderExists(foldername string) bool {
 
 // Check if a command exists
 func commandExists(cmd string) bool {
-	_, err := exec.LookPath(cmd)
-	return err == nil
+        cmd, err := exec.LookPath(cmd)
+        if err != nil {
+                return false
+        }
+        return true
 }
