@@ -176,3 +176,12 @@ func commandExists(cmd string) bool {
 	}
 	return true
 }
+
+// Get the current user dir
+func userDir() string {
+        usr, err := user.Current()
+        if err != nil {
+                log.Fatal(err)
+        }
+        return usr.HomeDir
+}
