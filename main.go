@@ -113,7 +113,7 @@ func uninstallFlutterOnWindows() {
 func installFlutterOnUnix() {
 	if folderExists(flutterPath) {
 		path, err := os.OpenFile("/etc/profile", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-		path.Write([]byte("export PATH=$PATH:/src/flutter/bin\n"))
+		path.Write([]byte("export PATH=$PATH:", flutterBin))
 		path.Close()
 		if err != nil {
 			os.RemoveAll(flutterPath)
@@ -137,7 +137,7 @@ func uninstallFlutterOnUnix() {
 			if err != nil {
 				log.Println(err)
 			}
-			newContents := strings.Replace(string(read), ("export PATH=$PATH:/src/flutter/bin\n"), (""), -1)
+			newContents := strings.Replace(string(read), ("export PATH=$PATH:", flutterBin), (""), -1)
 			ioutil.WriteFile("/etc/profile", []byte(newContents), 0)
 		case 2:
 			os.Exit(0)
