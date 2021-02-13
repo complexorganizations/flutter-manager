@@ -2,8 +2,7 @@
 
 ---
 ### Features
-- Install Flutter ***Windows, Mac, Linux***
-- Uninstall Flutter ***Coming Soon***
+- Install \ Uninstall Flutter ***Windows, Mac, Linux***
 
 #### How to use Flutter manager?
 Download the latest flutter-manager binary
