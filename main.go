@@ -36,19 +36,17 @@ func selectOperatingSystem() {
 		gitCloneFlutter()
 		installFlutterOnLinux()
 	default:
-		fmt.Printf("Error: System %s Not Supported.\n", runtime.GOOS)
+		log.Fatal("Error: System %s Not Supported.\n", runtime.GOOS)
 	}
 }
 
 // System Requirements Check
 func commandsRequirementsCheck() {
 	if commandExists("flutter") {
-		log.Println("Error: Flutter command discovered in the system.")
-		os.Exit(0)
+		log.Fatal("Error: Flutter command discovered in the system.")
 	}
 	if !commandExists("git") {
-		log.Println("Error: Git was not discovered in the system.")
-		os.Exit(0)
+		log.Fatal("Error: Git was not discovered in the system.")
 	}
 }
 
@@ -76,9 +74,8 @@ func installFlutterOnWindows() {
 		cmd := exec.Command("setx", "path", flutterBin)
 		err := cmd.Run()
 		if err != nil {
-			log.Println("Error: Failed to write system path.")
 			os.RemoveAll(flutterPath)
-			os.Exit(0)
+			log.Fatal("Error: Failed to write system path.")
 		}
 	}
 }
@@ -90,9 +87,8 @@ func installFlutterOnMac() {
 		path.Write([]byte("export PATH=$PATH:/src/flutter/bin\n"))
 		path.Close()
 		if err != nil {
-			log.Println("Error: Failed to write system path.")
 			os.RemoveAll(flutterPath)
-			os.Exit(0)
+			log.Fatal("Error: Failed to write system path.")
 		}
 	}
 }
@@ -104,9 +100,8 @@ func installFlutterOnLinux() {
 		path.Write([]byte("export PATH=$PATH:/src/flutter/bin\n"))
 		path.Close()
 		if err != nil {
-			log.Println("Error: Failed to write system path.")
 			os.RemoveAll(flutterPath)
-			os.Exit(0)
+			log.Fatal("Error: Failed to write system path.")
 		}
 	}
 }
