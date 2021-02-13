@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -105,6 +106,24 @@ func installFlutterOnLinux() {
 	}
 }
 
+func uninstallFlutter() {
+	if folderExists(flutterPath) {
+		fmt.Println("What do you want to do?")
+		fmt.Println("1. Uninstall Flutter")
+		fmt.Println("2. Exit")
+		var number int
+		fmt.Scanln(&number)
+		switch number {
+		case 1:
+			os.RemoveAll(flutterPath)
+		case 2:
+			os.Exit(0)
+		default:
+			fmt.Println("Error: this is not a valid response.")
+		}
+	}
+}
+
 // Check if a folder exists
 func folderExists(foldername string) bool {
 	info, err := os.Stat(foldername)
@@ -116,9 +135,9 @@ func folderExists(foldername string) bool {
 
 // Check if a command exists
 func commandExists(cmd string) bool {
-        cmd, err := exec.LookPath(cmd)
-        if err != nil {
-                return false
-        }
-        return true
+	cmd, err := exec.LookPath(cmd)
+	if err != nil {
+		return false
+	}
+	return true
 }
