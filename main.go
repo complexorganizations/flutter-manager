@@ -80,7 +80,7 @@ func gitCloneFlutter() {
 // Install Flutter On Windows
 func installFlutterOnWindows() {
 	if folderExists(flutterPath) {
-		cmd := exec.Command("setx", "path", flutterBin)
+		cmd := exec.Command("setx", "Flutter", flutterBin)
 		err := cmd.Run()
 		if err != nil {
 			os.RemoveAll(flutterPath)
@@ -100,6 +100,11 @@ func uninstallFlutterOnWindows() {
 		switch number {
 		case 1:
 			os.RemoveAll(flutterPath)
+			cmd := exec.Command("REG", "delete", "HKCU\Environment", "/F", "/V", "Flutter")
+			err := cmd.Run()
+			if err != nil {
+				log.Fatal("Error: Failed to remove system path.")
+			}
 		case 2:
 			os.Exit(0)
 		default:
