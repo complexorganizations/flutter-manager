@@ -3,7 +3,6 @@
 ---
 ### Features
 - Install Flutter ***Windows, Mac, Linux***
-- Manage Flutter ***Coming Soon***
 - Uninstall Flutter ***Coming Soon***
 
 #### How to use Flutter manager?
