@@ -65,14 +65,14 @@ func gitCloneFlutter() {
 		cmd.Run()
 		os.Mkdir(flutterSource, 0755)
 		os.Rename(tempFlutterPath, flutterPath)
-		ioutil.WriteFile(flutterManager, []byte("message"), 0644)
+		ioutil.WriteFile(flutterManager, []byte("flutter-manager: true"), 0644)
 	} else {
 		os.Chdir(systemTempFolder)
 		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
 		cmd.Run()
 		os.Mkdir(flutterSource, 0755)
 		os.Rename(tempFlutterPath, flutterPath)
-		ioutil.WriteFile(flutterManager, []byte("message"), 0644)
+		ioutil.WriteFile(flutterManager, []byte("flutter-manager: true"), 0644)
 	}
 }
 
