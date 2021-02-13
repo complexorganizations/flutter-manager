@@ -5,12 +5,14 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"io/ioutil"
 	"runtime"
 )
 
 var (
 	flutterSource    = "/src/"
 	flutterPath      = "/src/flutter/"
+	flutterManager   = "/src/flutter/flutter-manager"
 	flutterBin       = "/src/flutter/bin/"
 	systemTempFolder = "/tmp/"
 	tempFlutterPath  = "/tmp/flutter/"
@@ -25,14 +27,17 @@ func selectOperatingSystem() {
 	switch runtime.GOOS {
 	case "windows":
 		commandsRequirementsCheck()
+		uninstallFlutter()
 		gitCloneFlutter()
 		installFlutterOnWindows()
 	case "darwin":
 		commandsRequirementsCheck()
+		uninstallFlutter()
 		gitCloneFlutter()
 		installFlutterOnMac()
 	case "linux":
 		commandsRequirementsCheck()
+		uninstallFlutter()
 		gitCloneFlutter()
 		installFlutterOnLinux()
 	default:
@@ -60,12 +65,14 @@ func gitCloneFlutter() {
 		cmd.Run()
 		os.Mkdir(flutterSource, 0755)
 		os.Rename(tempFlutterPath, flutterPath)
+		ioutil.WriteFile(flutterManager, []byte("message"), 0644)
 	} else {
 		os.Chdir(systemTempFolder)
 		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
 		cmd.Run()
 		os.Mkdir(flutterSource, 0755)
 		os.Rename(tempFlutterPath, flutterPath)
+		ioutil.WriteFile(flutterManager, []byte("message"), 0644)
 	}
 }
 
@@ -108,7 +115,7 @@ func installFlutterOnLinux() {
 }
 
 func uninstallFlutter() {
-	if folderExists(flutterPath) {
+	if fileExists(flutterManager) {
 		fmt.Println("What do you want to do?")
 		fmt.Println("1. Uninstall Flutter")
 		fmt.Println("2. Exit")
@@ -123,6 +130,15 @@ func uninstallFlutter() {
 			fmt.Println("Error: this is not a valid response.")
 		}
 	}
+}
+
+// Check if a file exists
+func fileExists(filename string) bool {
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return !info.IsDir()
 }
 
 // Check if a folder exists
