@@ -15,8 +15,6 @@ var (
 	flutterPath      = "/src/flutter/"
 	flutterManager   = "/src/flutter/flutter-manager"
 	flutterBin       = "/src/flutter/bin/"
-	systemTempFolder = "/tmp/"
-	tempFlutterPath  = "/tmp/flutter/"
 )
 
 func main() {
@@ -59,20 +57,20 @@ func commandsRequirementsCheck() {
 
 // git clone flutter
 func gitCloneFlutter() {
-	if !folderExists(systemTempFolder) {
-		os.Mkdir(systemTempFolder, 0755)
-		os.Chdir(systemTempFolder)
+	if !folderExists(os.TempDir()) {
+		os.Mkdir(os.TempDir(), 0755)
+		os.Chdir(os.TempDir())
 		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
 		cmd.Run()
 		os.Mkdir(flutterSource, 0755)
-		os.Rename(tempFlutterPath, flutterPath)
+		os.Rename("flutter", flutterPath)
 		ioutil.WriteFile(flutterManager, []byte("flutter-manager: true"), 0644)
 	} else {
-		os.Chdir(systemTempFolder)
+		os.Chdir(os.TempDir())
 		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
 		cmd.Run()
 		os.Mkdir(flutterSource, 0755)
-		os.Rename(tempFlutterPath, flutterPath)
+		os.Rename("flutter", flutterPath)
 		ioutil.WriteFile(flutterManager, []byte("flutter-manager: true"), 0644)
 	}
 }
