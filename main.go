@@ -114,6 +114,7 @@ func installFlutterOnLinux() {
 	}
 }
 
+// Uninstall Flutter
 func uninstallFlutter() {
 	if fileExists(flutterManager) {
 		fmt.Println("What do you want to do?")
