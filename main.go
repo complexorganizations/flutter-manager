@@ -36,7 +36,8 @@ func selectOperatingSystem() {
 		gitCloneFlutter()
 		installFlutterOnLinux()
 	default:
-		log.Fatal("Error: System %s Not Supported.\n", runtime.GOOS)
+		fmt.Printf("Error: System %s Not Supported.\n", runtime.GOOS)
+		os.Exit(0)
 	}
 }
 
