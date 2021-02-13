@@ -5,17 +5,16 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"os/user"
 	"os/exec"
+	"os/user"
 	"runtime"
 	"strings"
 )
 
 var (
-	flutterSource    = "/src/"
-	flutterPath      = "/src/flutter/"
-	flutterManager   = "/src/flutter/flutter-manager"
-	flutterBin       = "/src/flutter/bin/"
+	flutterSource = userDir()
+	flutterPath   = fmt.Sprint(userDir(), "/flutter")
+	flutterBin    = fmt.Sprint(flutterPath, "/bin")
 )
 
 func main() {
@@ -65,14 +64,12 @@ func gitCloneFlutter() {
 		cmd.Run()
 		os.Mkdir(flutterSource, 0755)
 		os.Rename("flutter", flutterPath)
-		ioutil.WriteFile(flutterManager, []byte("flutter-manager: true"), 0644)
 	} else {
 		os.Chdir(os.TempDir())
 		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
 		cmd.Run()
 		os.Mkdir(flutterSource, 0755)
 		os.Rename("flutter", flutterPath)
-		ioutil.WriteFile(flutterManager, []byte("flutter-manager: true"), 0644)
 	}
 }
 
@@ -90,7 +87,7 @@ func installFlutterOnWindows() {
 
 // Uninstall flutter on Windows
 func uninstallFlutterOnWindows() {
-	if fileExists(flutterManager) {
+	if folderExists(flutterPath) {
 		fmt.Println("What do you want to do?")
 		fmt.Println("1. Uninstall Flutter")
 		fmt.Println("2. Exit")
@@ -127,7 +124,7 @@ func installFlutterOnUnix() {
 
 // Uninstall Flutter on Linux
 func uninstallFlutterOnUnix() {
-	if fileExists(flutterManager) {
+	if folderExists(flutterPath) {
 		fmt.Println("What do you want to do?")
 		fmt.Println("1. Uninstall Flutter")
 		fmt.Println("2. Exit")
@@ -150,15 +147,6 @@ func uninstallFlutterOnUnix() {
 	}
 }
 
-// Check if a file exists
-func fileExists(filename string) bool {
-	info, err := os.Stat(filename)
-	if os.IsNotExist(err) {
-		return false
-	}
-	return !info.IsDir()
-}
-
 // Check if a folder exists
 func folderExists(foldername string) bool {
 	info, err := os.Stat(foldername)
@@ -179,9 +167,9 @@ func commandExists(cmd string) bool {
 
 // Get the current user dir
 func userDir() string {
-        usr, err := user.Current()
-        if err != nil {
-                log.Fatal(err)
-        }
-        return usr.HomeDir
+	usr, err := user.Current()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return usr.HomeDir
 }
