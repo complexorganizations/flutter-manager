@@ -100,7 +100,7 @@ func uninstallFlutterOnWindows() {
 		switch number {
 		case 1:
 			os.RemoveAll(flutterPath)
-			cmd := exec.Command("REG", "delete", "HKCU\Environment", "/F", "/V", "Flutter")
+			cmd := exec.Command(`REG delete HKCU \ Environment / F / V Flutter`)
 			err := cmd.Run()
 			if err != nil {
 				log.Fatal("Error: Failed to remove system path.")
