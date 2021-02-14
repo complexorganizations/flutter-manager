@@ -113,12 +113,15 @@ func uninstallFlutterOnWindows() {
 // Install Flutter On Linux, Mac
 func installFlutterOnUnix() {
 	if folderExists(flutterPath) {
-		path, err := os.OpenFile(profilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-		path.Write([]byte("export PATH=$PATH:" + flutterBin))
-		path.Close()
-		if err != nil {
-			os.RemoveAll(flutterPath)
-			log.Fatal("Error: Failed to write system path.")
+		data, err := ioutil.ReadFile(path)
+		if strings.Contains(string(data), "flutter") {
+			path, err := os.OpenFile(profilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+			path.Write([]byte("export PATH=$PATH:" + flutterBin))
+			path.Close()
+			if err != nil {
+				os.RemoveAll(flutterPath)
+				log.Fatal("Error: Failed to write system path.")
+			}
 		}
 	}
 }
