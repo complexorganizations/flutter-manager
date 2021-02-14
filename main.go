@@ -82,11 +82,17 @@ func gitCloneFlutter() {
 // Install Flutter On Windows
 func installFlutterOnWindows() {
 	if folderExists(flutterPath) {
-		cmd := exec.Command("setx", "Flutter", flutterBin)
-		err := cmd.Run()
+		data, err := ioutil.ReadFile(profilePath)
 		if err != nil {
-			os.RemoveAll(flutterPath)
-			log.Fatal("Error: Failed to write flutter in system path.")
+			log.Println(err)
+		}
+		if !strings.Contains(string(data), "flutter") {
+			cmd := exec.Command("setx", "Flutter", flutterBin)
+			err := cmd.Run()
+			if err != nil {
+				os.RemoveAll(flutterPath)
+				log.Fatal("Error: Failed to write flutter in system path.")
+			}
 		}
 	}
 }
@@ -119,7 +125,10 @@ func uninstallFlutterOnWindows() {
 func installFlutterOnUnix() {
 	if folderExists(flutterPath) {
 		data, err := ioutil.ReadFile(profilePath)
-		if strings.Contains(string(data), "flutter") {
+		if err != nil {
+			log.Println(err)
+		}
+		if !strings.Contains(string(data), "flutter") {
 			path, err := os.OpenFile(profilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 			path.Write([]byte("export PATH=$PATH:" + flutterBin))
 			path.Close()
@@ -127,9 +136,6 @@ func installFlutterOnUnix() {
 				os.RemoveAll(flutterPath)
 				log.Fatal("Error: Failed to write flutter in system path.")
 			}
-		}
-		if err != nil {
-			log.Println(err)
 		}
 	}
 }
