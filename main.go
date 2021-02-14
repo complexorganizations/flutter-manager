@@ -6,15 +6,16 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"os/user"
 	"runtime"
 	"strings"
 )
 
 var (
-	flutterSource    = "/src/"
-	flutterPath      = "/src/flutter/"
-	flutterManager   = "/src/flutter/flutter-manager"
-	flutterBin       = "/src/flutter/bin/"
+	flutterSource = userDir()
+	flutterPath   = fmt.Sprint(userDir() + "/flutter")
+	flutterBin    = fmt.Sprint(flutterPath + "/bin")
+	profilePath   = fmt.Sprint(userDir() + "/.profile")
 )
 
 func main() {
@@ -64,14 +65,12 @@ func gitCloneFlutter() {
 		cmd.Run()
 		os.Mkdir(flutterSource, 0755)
 		os.Rename("flutter", flutterPath)
-		ioutil.WriteFile(flutterManager, []byte("flutter-manager: true"), 0644)
 	} else {
 		os.Chdir(os.TempDir())
 		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
 		cmd.Run()
 		os.Mkdir(flutterSource, 0755)
 		os.Rename("flutter", flutterPath)
-		ioutil.WriteFile(flutterManager, []byte("flutter-manager: true"), 0644)
 	}
 }
 
@@ -89,7 +88,7 @@ func installFlutterOnWindows() {
 
 // Uninstall flutter on Windows
 func uninstallFlutterOnWindows() {
-	if fileExists(flutterManager) {
+	if folderExists(flutterPath) {
 		fmt.Println("What do you want to do?")
 		fmt.Println("1. Uninstall Flutter")
 		fmt.Println("2. Exit")
@@ -114,19 +113,25 @@ func uninstallFlutterOnWindows() {
 // Install Flutter On Linux, Mac
 func installFlutterOnUnix() {
 	if folderExists(flutterPath) {
-		path, err := os.OpenFile("/etc/profile", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-		path.Write([]byte("export PATH=$PATH:/src/flutter/bin\n"))
-		path.Close()
+		data, err := ioutil.ReadFile(profilePath)
+		if strings.Contains(string(data), "flutter") {
+			path, err := os.OpenFile(profilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+			path.Write([]byte("export PATH=$PATH:" + flutterBin))
+			path.Close()
+			if err != nil {
+				os.RemoveAll(flutterPath)
+				log.Fatal("Error: Failed to write system path.")
+			}
+		}
 		if err != nil {
-			os.RemoveAll(flutterPath)
-			log.Fatal("Error: Failed to write system path.")
+			log.Println(err)
 		}
 	}
 }
 
 // Uninstall Flutter on Linux
 func uninstallFlutterOnUnix() {
-	if fileExists(flutterManager) {
+	if folderExists(flutterPath) {
 		fmt.Println("What do you want to do?")
 		fmt.Println("1. Uninstall Flutter")
 		fmt.Println("2. Exit")
@@ -135,27 +140,18 @@ func uninstallFlutterOnUnix() {
 		switch number {
 		case 1:
 			os.RemoveAll(flutterPath)
-			read, err := ioutil.ReadFile("/etc/profile")
+			read, err := ioutil.ReadFile(profilePath)
 			if err != nil {
 				log.Println(err)
 			}
-			newContents := strings.Replace(string(read), ("export PATH=$PATH:/src/flutter/bin\n"), (""), -1)
-			ioutil.WriteFile("/etc/profile", []byte(newContents), 0)
+			newContents := strings.Replace(string(read), ("export PATH=$PATH:" + flutterBin), (""), -1)
+			ioutil.WriteFile(profilePath, []byte(newContents), 0)
 		case 2:
 			os.Exit(0)
 		default:
 			fmt.Println("Error: this is not a valid response.")
 		}
 	}
-}
-
-// Check if a file exists
-func fileExists(filename string) bool {
-	info, err := os.Stat(filename)
-	if os.IsNotExist(err) {
-		return false
-	}
-	return !info.IsDir()
 }
 
 // Check if a folder exists
@@ -174,4 +170,13 @@ func commandExists(cmd string) bool {
 		return false
 	}
 	return true
+}
+
+// Get the current user dir
+func userDir() string {
+	usr, err := user.Current()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return usr.HomeDir
 }
