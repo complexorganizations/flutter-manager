@@ -15,7 +15,7 @@ var (
 	flutterSource = userDir()
 	flutterPath   = fmt.Sprint(userDir() + "/flutter")
 	flutterBin    = fmt.Sprint(flutterPath + "/bin")
-	profilePath   = fmt.Sprint(userDir() + "/.profile")
+	unixProfilePath   = fmt.Sprint(userDir() + "/.profile")
 )
 
 func main() {
@@ -127,12 +127,12 @@ func uninstallFlutterOnWindows() {
 // Install Flutter On Linux, Mac
 func installFlutterOnUnix() {
 	if folderExists(flutterPath) {
-		data, err := ioutil.ReadFile(profilePath)
+		data, err := ioutil.ReadFile(unixProfilePath)
 		if err != nil {
 			log.Println(err)
 		}
 		if !strings.Contains(string(data), "flutter") {
-			path, err := os.OpenFile(profilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+			path, err := os.OpenFile(unixProfilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 			path.Write([]byte("export PATH=$PATH:" + flutterBin))
 			path.Close()
 			if err != nil {
@@ -154,17 +154,17 @@ func uninstallFlutterOnUnix() {
 		switch number {
 		case 1:
 			os.RemoveAll(flutterPath)
-			data, err := ioutil.ReadFile(profilePath)
+			data, err := ioutil.ReadFile(unixProfilePath)
 			if err != nil {
 				log.Println(err)
 			}
 			if strings.Contains(string(data), "flutter") {
-				read, err := ioutil.ReadFile(profilePath)
+				read, err := ioutil.ReadFile(unixProfilePath)
 				if err != nil {
 					log.Println(err)
 				}
 				newContents := strings.Replace(string(read), ("export PATH=$PATH:" + flutterBin), (""), -1)
-				ioutil.WriteFile(profilePath, []byte(newContents), 0)
+				ioutil.WriteFile(unixProfilePath, []byte(newContents), 0)
 			}
 		case 2:
 			os.Exit(0)
