@@ -67,7 +67,7 @@ func gitCloneFlutter() {
 	if folderExists(os.TempDir()) {
 		os.Chdir(os.TempDir())
 	} else {
-		os.Mkdir(os.TempDir())
+		os.MkdirAll(os.TempDir())
 		os.Chdir(os.TempDir())
 	}
 	if folderExists(flutterTempPath) {
