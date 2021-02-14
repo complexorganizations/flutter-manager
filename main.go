@@ -64,25 +64,19 @@ func commandsRequirementsCheck() {
 
 // git clone flutter
 func gitCloneFlutter() {
-	if folderExists(systemTempPath) {
-		os.Chdir(systemTempPath)
-	} else {
+	if !folderExists(systemTempPath) {
 		os.Mkdir(systemTempPath, 755)
-		os.Chdir(systemTempPath)
 	}
 	if !folderExists(userDirectory()) {
 		os.Mkdir(userDirectory(), 755)
 	}
-	if !folderExists(flutterTempPath) {
-		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
-		cmd.Run()
-		os.Rename(flutterTempPath, flutterPath)
-	} else {
+	if folderExists(flutterTempPath) {
 		os.RemoveAll(flutterTempPath)
-		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
-		cmd.Run()
-		os.Rename(flutterTempPath, flutterPath)
 	}
+	os.Chdir(systemTempPath)
+	cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
+	cmd.Run()
+	os.Rename(flutterTempPath, flutterPath)
 }
 
 // Install Flutter On Windows
