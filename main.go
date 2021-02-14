@@ -41,7 +41,7 @@ func selectOperatingSystem() {
 		gitCloneFlutter()
 		installFlutterOnUnix()
 	default:
-		fmt.Printf("Error: System %s Not Supported.\n", runtime.GOOS)
+		fmt.Printf("Error: %s is not supported (yet).\n", runtime.GOOS)
 		os.Exit(0)
 	}
 }
@@ -50,11 +50,14 @@ func selectOperatingSystem() {
 func commandsRequirementsCheck() {
 	if !folderExists(flutterPath) {
 		if commandExists("flutter") {
-			log.Fatal("Error: Flutter command discovered in the system.")
+			log.Fatal("Error: Flutter was discovered in the system.")
 		}
 	}
 	if !commandExists("git") {
-		log.Fatal("Error: Git was not discovered in the system.")
+		log.Fatal("Error: Git was NOT discovered in the system.")
+	}
+	if fileExists("/.dockerenv") {
+		log.Fatal("Error: Docker is not supported (yet).")
 	}
 }
 
@@ -83,7 +86,7 @@ func installFlutterOnWindows() {
 		err := cmd.Run()
 		if err != nil {
 			os.RemoveAll(flutterPath)
-			log.Fatal("Error: Failed to write system path.")
+			log.Fatal("Error: Failed to write flutter in system path.")
 		}
 	}
 }
@@ -102,7 +105,7 @@ func uninstallFlutterOnWindows() {
 			cmd := exec.Command(`REG delete HKCU \ Environment / F / V Flutter`)
 			err := cmd.Run()
 			if err != nil {
-				log.Fatal("Error: Failed to remove system path.")
+				log.Fatal("Error: Failed to remove flutter from system path.")
 			}
 		case 2:
 			os.Exit(0)
@@ -122,7 +125,7 @@ func installFlutterOnUnix() {
 			path.Close()
 			if err != nil {
 				os.RemoveAll(flutterPath)
-				log.Fatal("Error: Failed to write system path.")
+				log.Fatal("Error: Failed to write flutter in system path.")
 			}
 		}
 		if err != nil {
@@ -169,6 +172,15 @@ func folderExists(foldername string) bool {
 		return false
 	}
 	return info.IsDir()
+}
+
+// Check if a file exists
+func fileExists(filename string) bool {
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return !info.IsDir()
 }
 
 // Check if a command exists
