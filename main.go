@@ -12,10 +12,11 @@ import (
 )
 
 var (
-	flutterSource = userDir()
-	flutterPath   = fmt.Sprint(userDir() + "/flutter")
-	flutterBin    = fmt.Sprint(flutterPath + "/bin")
-	unixProfilePath   = fmt.Sprint(userDir() + "/.profile")
+	flutterSource   = userDir()
+	flutterPath     = fmt.Sprint(userDir() + "/flutter")
+	flutterBin      = fmt.Sprint(flutterPath + "/bin")
+	flutterTempPath = fmt.Sprint(os.TempDir() + "/flutter")
+	unixProfilePath = fmt.Sprint(userDir() + "/.profile")
 )
 
 func main() {
@@ -65,17 +66,19 @@ func commandsRequirementsCheck() {
 func gitCloneFlutter() {
 	if !folderExists(os.TempDir()) {
 		os.Mkdir(os.TempDir(), 0755)
-		os.Chdir(os.TempDir())
-		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
-		cmd.Run()
-		os.Mkdir(flutterSource, 0755)
-		os.Rename("flutter", flutterPath)
-	} else {
-		os.Chdir(os.TempDir())
-		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
-		cmd.Run()
-		os.Mkdir(flutterSource, 0755)
-		os.Rename("flutter", flutterPath)
+		if !folderExists(flutterTempPath) {
+			os.Chdir(os.TempDir())
+			cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
+			cmd.Run()
+			os.Mkdir(flutterSource, 0755)
+			os.Rename("flutter", flutterPath)
+		} else {
+			os.Chdir(os.TempDir())
+			cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
+			cmd.Run()
+			os.Mkdir(flutterSource, 0755)
+			os.Rename("flutter", flutterPath)
+		}
 	}
 }
 
