@@ -64,21 +64,23 @@ func commandsRequirementsCheck() {
 
 // git clone flutter
 func gitCloneFlutter() {
-	if !folderExists(os.TempDir()) {
-		os.Mkdir(os.TempDir(), 0755)
+	if folderExists(os.TempDir()) {
 		os.Chdir(os.TempDir())
-		if !folderExists(flutterTempPath) {
-			cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
-			cmd.Run()
-			os.Mkdir(flutterSource, 0755)
-			os.Rename(flutterTempPath, flutterPath)
-		} else {
-			os.RemoveAll(flutterTempPath)
-			cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
-			cmd.Run()
-			os.Mkdir(flutterSource, 0755)
-			os.Rename(flutterTempPath, flutterPath)
-		}
+	} else {
+		os.Mkdir(os.TempDir())
+		os.Chdir(os.TempDir())
+	}
+	if folderExists(flutterTempPath) {
+		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
+		cmd.Run()
+		os.Mkdir(flutterSource, 0755)
+		os.Rename(flutterTempPath, flutterPath)
+	} else {
+		os.RemoveAll(flutterTempPath)
+		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
+		cmd.Run()
+		os.Mkdir(flutterSource, 0755)
+		os.Rename(flutterTempPath, flutterPath)
 	}
 }
 
