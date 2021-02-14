@@ -13,11 +13,10 @@ import (
 
 var (
 	systemTempPath  = os.TempDir()
-	flutterSource   = userDir()
-	flutterPath     = fmt.Sprint(userDir() + "/flutter")
+	flutterPath     = fmt.Sprint(userDirectory() + "/flutter")
 	flutterBin      = fmt.Sprint(flutterPath + "/bin")
 	flutterTempPath = fmt.Sprint(systemTempPath + "/flutter")
-	unixProfilePath = fmt.Sprint(userDir() + "/.profile")
+	unixProfilePath = fmt.Sprint(userDirectory() + "/.profile")
 )
 
 func main() {
@@ -71,8 +70,8 @@ func gitCloneFlutter() {
 		os.Mkdir(systemTempPath, 755)
 		os.Chdir(systemTempPath)
 	}
-	if !folderExists(flutterSource) {
-		os.Mkdir(flutterSource, 755)
+	if !folderExists(userDirectory()) {
+		os.Mkdir(userDirectory(), 755)
 	}
 	if !folderExists(flutterTempPath) {
 		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
@@ -209,10 +208,10 @@ func commandExists(cmd string) bool {
 }
 
 // Get the current user dir
-func userDir() string {
-	usr, err := user.Current()
+func userDirectory() string {
+	user, err := user.Current()
 	if err != nil {
 		log.Fatal(err)
 	}
-	return usr.HomeDir
+	return user.HomeDir
 }
