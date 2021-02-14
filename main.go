@@ -113,7 +113,7 @@ func uninstallFlutterOnWindows() {
 // Install Flutter On Linux, Mac
 func installFlutterOnUnix() {
 	if folderExists(flutterPath) {
-		data, err := ioutil.ReadFile(path)
+		data, err := ioutil.ReadFile(profilePath)
 		if strings.Contains(string(data), "flutter") {
 			path, err := os.OpenFile(profilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 			path.Write([]byte("export PATH=$PATH:" + flutterBin))
