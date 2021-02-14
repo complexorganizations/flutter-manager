@@ -123,6 +123,9 @@ func installFlutterOnUnix() {
 				log.Fatal("Error: Failed to write system path.")
 			}
 		}
+		if err != nil {
+			log.Println(err)
+		}
 	}
 }
 
