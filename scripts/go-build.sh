@@ -41,7 +41,7 @@ installing-system-requirements
 # Build for all the OS
 function build-golang-app() {
     APPLICATION="flutter-manager"
-    VERSION="1.0.1"
+    VERSION="1.0.0"
     if [ -x "$(command -v go)" ]; then
         # Darwin
         GOOS=darwin GOARCH=amd64 go build -o build/$APPLICATION-$VERSION-darwin-amd64 .
