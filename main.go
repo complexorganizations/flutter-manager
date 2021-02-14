@@ -13,9 +13,9 @@ import (
 
 var (
 	flutterSource = userDir()
-	flutterPath   = fmt.Sprint(userDir(), "/flutter")
-	flutterBin    = fmt.Sprint(flutterPath, "/bin")
-	profilePath   = fmt.Sprint(userDir(), "./profile")
+	flutterPath   = fmt.Sprint(userDir() + "/flutter")
+	flutterBin    = fmt.Sprint(flutterPath + "/bin")
+	profilePath   = fmt.Sprint(userDir() + "./profile")
 )
 
 func main() {
