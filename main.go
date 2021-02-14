@@ -71,16 +71,17 @@ func gitCloneFlutter() {
 		os.Mkdir(systemTempPath, 755)
 		os.Chdir(systemTempPath)
 	}
-	if folderExists(flutterTempPath) {
+	if !folderExists(flutterSource) {
+		os.Mkdir(flutterSource, 755)
+	}
+	if !folderExists(flutterTempPath) {
 		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
 		cmd.Run()
-		os.Mkdir(flutterSource, 0755)
 		os.Rename(flutterTempPath, flutterPath)
 	} else {
 		os.RemoveAll(flutterTempPath)
 		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
 		cmd.Run()
-		os.Mkdir(flutterSource, 0755)
 		os.Rename(flutterTempPath, flutterPath)
 	}
 }
