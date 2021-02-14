@@ -82,16 +82,19 @@ func gitCloneFlutter() {
 // Install Flutter On Windows
 func installFlutterOnWindows() {
 	if folderExists(flutterPath) {
-		data, err := ioutil.ReadFile(profilePath)
-		if err != nil {
-			log.Println(err)
-		}
-		if !strings.Contains(string(data), "flutter") {
-			cmd := exec.Command("setx", "Flutter", flutterBin)
-			err := cmd.Run()
+		path, exists := os.LookupEnv("PATH")
+		if exists {
+			data, err := ioutil.ReadFile(path)
 			if err != nil {
-				os.RemoveAll(flutterPath)
-				log.Fatal("Error: Failed to write flutter in system path.")
+				log.Println(err)
+			}
+			if !strings.Contains(string(data), "flutter") {
+				cmd := exec.Command("setx", "Flutter", flutterBin)
+				err := cmd.Run()
+				if err != nil {
+					os.RemoveAll(flutterPath)
+					log.Fatal("Error: Failed to write flutter in system path.")
+				}
 			}
 		}
 	}
@@ -108,7 +111,7 @@ func uninstallFlutterOnWindows() {
 		switch number {
 		case 1:
 			os.RemoveAll(flutterPath)
-			cmd := exec.Command(`REG delete HKCU \ Environment / F / V Flutter`)
+			cmd := exec.Command("REG", "delete", "HKCU", `\`, "Environment", "/F /V", "Flutter")
 			err := cmd.Run()
 			if err != nil {
 				log.Fatal("Error: Failed to remove flutter from system path.")
