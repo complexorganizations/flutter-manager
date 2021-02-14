@@ -73,10 +73,12 @@ func gitCloneFlutter() {
 	if folderExists(flutterTempPath) {
 		os.RemoveAll(flutterTempPath)
 	}
-	os.Chdir(systemTempPath)
-	cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
-	cmd.Run()
-	os.Rename(flutterTempPath, flutterPath)
+	if !folderExists(flutterTempPath) {
+		os.Chdir(systemTempPath)
+		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
+		cmd.Run()
+		os.Rename(flutterTempPath, flutterPath)
+	}
 }
 
 // Install Flutter On Windows
