@@ -48,9 +48,6 @@ func selectOperatingSystem() {
 
 // System Requirements Check
 func commandsRequirementsCheck() {
-	if commandExists("flutter") {
-		log.Fatal("Error: Flutter command discovered in the system.")
-	}
 	if !commandExists("git") {
 		log.Fatal("Error: Git was not discovered in the system.")
 	}
