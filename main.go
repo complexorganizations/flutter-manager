@@ -91,7 +91,7 @@ func installFlutterOnWindows() {
 				log.Println(err)
 			}
 			if !strings.Contains(string(data), "flutter") {
-				cmd := exec.Command("setx", "Flutter", flutterBin)
+				cmd := exec.Command("setx", "flutter", flutterBin)
 				err := cmd.Run()
 				if err != nil {
 					os.RemoveAll(flutterPath)
