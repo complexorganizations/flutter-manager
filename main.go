@@ -12,10 +12,11 @@ import (
 )
 
 var (
-	flutterSource = userDir()
-	flutterPath   = fmt.Sprint(userDir() + "/flutter")
-	flutterBin    = fmt.Sprint(flutterPath + "/bin")
-	profilePath   = fmt.Sprint(userDir() + "/.profile")
+	flutterSource   = userDir()
+	flutterPath     = fmt.Sprint(userDir() + "/flutter")
+	flutterBin      = fmt.Sprint(flutterPath + "/bin")
+	flutterTempPath = fmt.Sprint(os.TempDir() + "/flutter")
+	unixProfilePath = fmt.Sprint(userDir() + "/.profile")
 )
 
 func main() {
@@ -65,28 +66,40 @@ func commandsRequirementsCheck() {
 func gitCloneFlutter() {
 	if !folderExists(os.TempDir()) {
 		os.Mkdir(os.TempDir(), 0755)
-		os.Chdir(os.TempDir())
-		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
-		cmd.Run()
-		os.Mkdir(flutterSource, 0755)
-		os.Rename("flutter", flutterPath)
-	} else {
-		os.Chdir(os.TempDir())
-		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
-		cmd.Run()
-		os.Mkdir(flutterSource, 0755)
-		os.Rename("flutter", flutterPath)
+		if !folderExists(flutterTempPath) {
+			os.Chdir(os.TempDir())
+			cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
+			cmd.Run()
+			os.Mkdir(flutterSource, 0755)
+			os.Rename(flutterTempPath, flutterPath)
+		} else {
+			os.Chdir(os.TempDir())
+			os.RemoveAll(flutterTempPath)
+			cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
+			cmd.Run()
+			os.Mkdir(flutterSource, 0755)
+			os.Rename(flutterTempPath, flutterPath)
+		}
 	}
 }
 
 // Install Flutter On Windows
 func installFlutterOnWindows() {
 	if folderExists(flutterPath) {
-		cmd := exec.Command("setx", "Flutter", flutterBin)
-		err := cmd.Run()
-		if err != nil {
-			os.RemoveAll(flutterPath)
-			log.Fatal("Error: Failed to write flutter in system path.")
+		path, exists := os.LookupEnv("PATH")
+		if exists {
+			data, err := ioutil.ReadFile(path)
+			if err != nil {
+				log.Println(err)
+			}
+			if !strings.Contains(string(data), "flutter") {
+				cmd := exec.Command("setx", "Flutter", flutterBin)
+				err := cmd.Run()
+				if err != nil {
+					os.RemoveAll(flutterPath)
+					log.Fatal("Error: Failed to write flutter in system path.")
+				}
+			}
 		}
 	}
 }
@@ -102,7 +115,7 @@ func uninstallFlutterOnWindows() {
 		switch number {
 		case 1:
 			os.RemoveAll(flutterPath)
-			cmd := exec.Command(`REG delete HKCU \ Environment / F / V Flutter`)
+			cmd := exec.Command("REG", "delete", "HKCU", `\`, "Environment", "/F /V", "Flutter")
 			err := cmd.Run()
 			if err != nil {
 				log.Fatal("Error: Failed to remove flutter from system path.")
@@ -118,18 +131,18 @@ func uninstallFlutterOnWindows() {
 // Install Flutter On Linux, Mac
 func installFlutterOnUnix() {
 	if folderExists(flutterPath) {
-		data, err := ioutil.ReadFile(profilePath)
-		if strings.Contains(string(data), "flutter") {
-			path, err := os.OpenFile(profilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		data, err := ioutil.ReadFile(unixProfilePath)
+		if err != nil {
+			log.Println(err)
+		}
+		if !strings.Contains(string(data), "flutter") {
+			path, err := os.OpenFile(unixProfilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 			path.Write([]byte("export PATH=$PATH:" + flutterBin))
 			path.Close()
 			if err != nil {
 				os.RemoveAll(flutterPath)
 				log.Fatal("Error: Failed to write flutter in system path.")
 			}
-		}
-		if err != nil {
-			log.Println(err)
 		}
 	}
 }
@@ -145,17 +158,17 @@ func uninstallFlutterOnUnix() {
 		switch number {
 		case 1:
 			os.RemoveAll(flutterPath)
-			data, err := ioutil.ReadFile(profilePath)
+			data, err := ioutil.ReadFile(unixProfilePath)
 			if err != nil {
 				log.Println(err)
 			}
 			if strings.Contains(string(data), "flutter") {
-				read, err := ioutil.ReadFile(profilePath)
+				read, err := ioutil.ReadFile(unixProfilePath)
 				if err != nil {
 					log.Println(err)
 				}
 				newContents := strings.Replace(string(read), ("export PATH=$PATH:" + flutterBin), (""), -1)
-				ioutil.WriteFile(profilePath, []byte(newContents), 0)
+				ioutil.WriteFile(unixProfilePath, []byte(newContents), 0)
 			}
 		case 2:
 			os.Exit(0)
