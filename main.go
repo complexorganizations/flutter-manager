@@ -140,12 +140,18 @@ func uninstallFlutterOnUnix() {
 		switch number {
 		case 1:
 			os.RemoveAll(flutterPath)
-			read, err := ioutil.ReadFile(profilePath)
+			data, err := ioutil.ReadFile(profilePath)
+			if strings.Contains(string(data), "flutter") {
+				read, err := ioutil.ReadFile(profilePath)
+				if err != nil {
+					log.Println(err)
+				}
+				newContents := strings.Replace(string(read), ("export PATH=$PATH:" + flutterBin), (""), -1)
+				ioutil.WriteFile(profilePath, []byte(newContents), 0)
+			}
 			if err != nil {
 				log.Println(err)
 			}
-			newContents := strings.Replace(string(read), ("export PATH=$PATH:" + flutterBin), (""), -1)
-			ioutil.WriteFile(profilePath, []byte(newContents), 0)
 		case 2:
 			os.Exit(0)
 		default:
