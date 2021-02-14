@@ -15,6 +15,7 @@ var (
 	flutterSource = userDir()
 	flutterPath   = fmt.Sprint(userDir(), "/flutter")
 	flutterBin    = fmt.Sprint(flutterPath, "/bin")
+	profilePath   = fmt.Sprint(userDir(), "./profile")
 )
 
 func main() {
@@ -112,7 +113,7 @@ func uninstallFlutterOnWindows() {
 // Install Flutter On Linux, Mac
 func installFlutterOnUnix() {
 	if folderExists(flutterPath) {
-		path, err := os.OpenFile("/etc/profile", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		path, err := os.OpenFile(profilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 		path.Write([]byte("export PATH=$PATH:" + flutterBin))
 		path.Close()
 		if err != nil {
@@ -133,12 +134,12 @@ func uninstallFlutterOnUnix() {
 		switch number {
 		case 1:
 			os.RemoveAll(flutterPath)
-			read, err := ioutil.ReadFile("/etc/profile")
+			read, err := ioutil.ReadFile(profilePath)
 			if err != nil {
 				log.Println(err)
 			}
 			newContents := strings.Replace(string(read), ("export PATH=$PATH:" + flutterBin), (""), -1)
-			ioutil.WriteFile("/etc/profile", []byte(newContents), 0)
+			ioutil.WriteFile(profilePath, []byte(newContents), 0)
 		case 2:
 			os.Exit(0)
 		default:
