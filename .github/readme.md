@@ -5,10 +5,7 @@
 - Install \ Uninstall Flutter ***Windows, Mac, Linux***
 
 #### How to use Flutter manager?
-Download the latest flutter-manager binary
-```
-go get -v github.com/complexorganizations/flutter-manager
-```
+Download the latest flutter-manager binary and execute it.
 ```
 flutter-manager
 ```
