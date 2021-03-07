@@ -142,7 +142,7 @@ func installFlutterOnUnix() {
 			path.Write([]byte("export PATH=$PATH:" + flutterBin))
 			path.Close()
 			cmd := exec.Command("source", unixProfilePath)
-			err := cmd.Run()
+			err = cmd.Run()
 			if err != nil {
 				log.Fatal("Error: Failed to write flutter in system path.")
 			}
