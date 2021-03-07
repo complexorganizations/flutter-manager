@@ -135,10 +135,15 @@ func installFlutterOnUnix() {
 		}
 		if !strings.Contains(string(data), "flutter") {
 			path, err := os.OpenFile(unixProfilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-			path.Write([]byte("export PATH=$PATH:" + flutterBin))
-			path.Close()
 			if err != nil {
 				os.RemoveAll(flutterPath)
+				log.Fatal("Error: Failed to write flutter in system path.")
+			}
+			path.Write([]byte("export PATH=$PATH:" + flutterBin))
+			path.Close()
+			cmd := exec.Command("source", unixProfilePath)
+			err := cmd.Run()
+			if err != nil {
 				log.Fatal("Error: Failed to write flutter in system path.")
 			}
 		}
