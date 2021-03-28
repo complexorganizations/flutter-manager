@@ -31,12 +31,7 @@ func selectOperatingSystem() {
 		uninstallFlutterOnWindows()
 		gitCloneFlutter()
 		installFlutterOnWindows()
-	case "darwin":
-		commandsRequirementsCheck()
-		uninstallFlutterOnUnix()
-		gitCloneFlutter()
-		installFlutterOnUnix()
-	case "linux":
+	case "darwin", "linux":
 		commandsRequirementsCheck()
 		uninstallFlutterOnUnix()
 		gitCloneFlutter()
