@@ -38,7 +38,6 @@ func selectOperatingSystem() {
 		installFlutterOnUnix()
 	default:
 		fmt.Printf("Error: %s is not supported (yet).\n", runtime.GOOS)
-		os.Exit(0)
 	}
 }
 
