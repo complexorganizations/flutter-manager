@@ -59,10 +59,10 @@ func commandsRequirementsCheck() {
 // git clone flutter
 func gitCloneFlutter() {
 	if !folderExists(systemTempPath) {
-		os.Mkdir(systemTempPath, 755)
+		os.Mkdir(systemTempPath, 0755)
 	}
 	if !folderExists(userDirectory()) {
-		os.Mkdir(userDirectory(), 755)
+		os.Mkdir(userDirectory(), 0755)
 	}
 	if folderExists(flutterTempPath) {
 		os.RemoveAll(flutterTempPath)
@@ -123,6 +123,9 @@ func uninstallFlutterOnWindows() {
 // Install Flutter On Linux, Mac
 func installFlutterOnUnix() {
 	if folderExists(flutterPath) {
+		if runtime.GOOS == "darwin" {
+			unixProfilePath = fmt.Sprint(userDirectory() + "/.zprofile")
+		}
 		data, err := ioutil.ReadFile(unixProfilePath)
 		if err != nil {
 			log.Println(err)
@@ -193,12 +196,13 @@ func fileExists(filename string) bool {
 	return !info.IsDir()
 }
 
-// Check if a command exists
+// Check if there is an app installed
 func commandExists(cmd string) bool {
 	cmd, err := exec.LookPath(cmd)
 	if err != nil {
 		return false
 	}
+	_ = cmd // variable declared and not used
 	return true
 }
 
