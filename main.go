@@ -105,10 +105,23 @@ func uninstallFlutterOnWindows() {
 		case 1:
 			os.RemoveAll(flutterPath)
 			cmd := exec.Command("REG", "delete", "HKCU", `\`, "Environment", "/F /V", "Flutter")
-			err := cmd.Run()
-			if err != nil {
-				log.Fatal("Error: Failed to remove flutter from system path.")
-			}
+			cmd.Run()
+			cmd = exec.Command("flutter", "config", "--enable-web")
+			cmd.Run()
+			cmd = exec.Command("flutter", "config", "--enable-linux-desktop")
+			cmd.Run()
+			cmd = exec.Command("flutter", "config", "--enable-macos-desktop")
+			cmd.Run()
+			cmd = exec.Command("flutter", "config", "--enable-windows-desktop")
+			cmd.Run()
+			cmd = exec.Command("flutter", "config", "--enable-android")
+			cmd.Run()
+			cmd = exec.Command("flutter", "config", "--enable-ios")
+			cmd.Run()
+			cmd = exec.Command("flutter", "config", "--enable-fuchsia")
+			cmd.Run()
+			cmd = exec.Command("flutter", "upgrade")
+			cmd.Run()
 		case 2:
 			os.Exit(0)
 		default:
@@ -117,7 +130,7 @@ func uninstallFlutterOnWindows() {
 	}
 }
 
-// Install Flutter On Linux, Mac
+// Install Flutter On Linux, Unix
 func installFlutterOnUnix() {
 	if folderExists(flutterPath) {
 		if runtime.GOOS == "darwin" {
@@ -136,10 +149,23 @@ func installFlutterOnUnix() {
 			path.Write([]byte("export PATH=$PATH:" + flutterBin))
 			path.Close()
 			cmd := exec.Command("source", unixProfilePath)
-			err = cmd.Run()
-			if err != nil {
-				log.Fatal("Error: Failed to write flutter in system path.")
-			}
+			cmd.Run()
+			cmd = exec.Command("flutter", "config", "--enable-web")
+			cmd.Run()
+			cmd = exec.Command("flutter", "config", "--enable-linux-desktop")
+			cmd.Run()
+			cmd = exec.Command("flutter", "config", "--enable-macos-desktop")
+			cmd.Run()
+			cmd = exec.Command("flutter", "config", "--enable-windows-desktop")
+			cmd.Run()
+			cmd = exec.Command("flutter", "config", "--enable-android")
+			cmd.Run()
+			cmd = exec.Command("flutter", "config", "--enable-ios")
+			cmd.Run()
+			cmd = exec.Command("flutter", "config", "--enable-fuchsia")
+			cmd.Run()
+			cmd = exec.Command("flutter", "upgrade")
+			cmd.Run()
 		}
 	}
 }
@@ -182,15 +208,6 @@ func folderExists(foldername string) bool {
 		return false
 	}
 	return info.IsDir()
-}
-
-// Check if a file exists
-func fileExists(filename string) bool {
-	info, err := os.Stat(filename)
-	if os.IsNotExist(err) {
-		return false
-	}
-	return !info.IsDir()
 }
 
 // Check if there is an app installed
