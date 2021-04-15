@@ -45,11 +45,11 @@ func selectOperatingSystem() {
 func commandsRequirementsCheck() {
 	if !folderExists(flutterPath) {
 		if commandExists("flutter") {
-			log.Fatal("Error: Flutter was discovered in the system.")
+		log.Fatal("Error: The application flutter was not found in the system.")
 		}
 	}
 	if !commandExists("git") {
-		log.Fatal("Error: Git was NOT discovered in the system.")
+		log.Fatal("Error: The application git was not found in the system.")
 	}
 }
 
