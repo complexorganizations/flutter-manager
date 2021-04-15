@@ -181,6 +181,9 @@ func uninstallFlutterOnUnix() {
 		switch number {
 		case 1:
 			os.RemoveAll(flutterPath)
+			if runtime.GOOS == "darwin" {
+				unixProfilePath = fmt.Sprint(userDirectory() + "/.zprofile")
+			}
 			data, err := ioutil.ReadFile(unixProfilePath)
 			if err != nil {
 				log.Println(err)
