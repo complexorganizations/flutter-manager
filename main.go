@@ -51,9 +51,6 @@ func commandsRequirementsCheck() {
 	if !commandExists("git") {
 		log.Fatal("Error: Git was NOT discovered in the system.")
 	}
-	if fileExists("/.dockerenv") {
-		log.Fatal("Error: Docker is not supported (yet).")
-	}
 }
 
 // git clone flutter
