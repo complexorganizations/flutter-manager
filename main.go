@@ -45,7 +45,7 @@ func selectOperatingSystem() {
 func commandsRequirementsCheck() {
 	if !folderExists(flutterPath) {
 		if commandExists("flutter") {
-		log.Fatal("Error: The application flutter was not found in the system.")
+			log.Fatal("Error: The application flutter was not found in the system.")
 		}
 	}
 	if !commandExists("git") {
@@ -83,11 +83,27 @@ func installFlutterOnWindows() {
 			}
 			if !strings.Contains(string(data), "flutter") {
 				cmd := exec.Command("setx", "flutter", flutterBin)
-				err := cmd.Run()
+				err = cmd.Run()
 				if err != nil {
 					os.RemoveAll(flutterPath)
 					log.Fatal("Error: Failed to write flutter in system path.")
 				}
+				cmd = exec.Command("flutter", "config", "--enable-web")
+				cmd.Run()
+				cmd = exec.Command("flutter", "config", "--enable-linux-desktop")
+				cmd.Run()
+				cmd = exec.Command("flutter", "config", "--enable-macos-desktop")
+				cmd.Run()
+				cmd = exec.Command("flutter", "config", "--enable-windows-desktop")
+				cmd.Run()
+				cmd = exec.Command("flutter", "config", "--enable-android")
+				cmd.Run()
+				cmd = exec.Command("flutter", "config", "--enable-ios")
+				cmd.Run()
+				cmd = exec.Command("flutter", "config", "--enable-fuchsia")
+				cmd.Run()
+				cmd = exec.Command("flutter", "upgrade")
+				cmd.Run()
 			}
 		}
 	}
@@ -105,22 +121,6 @@ func uninstallFlutterOnWindows() {
 		case 1:
 			os.RemoveAll(flutterPath)
 			cmd := exec.Command("REG", "delete", "HKCU", `\`, "Environment", "/F /V", "Flutter")
-			cmd.Run()
-			cmd = exec.Command("flutter", "config", "--enable-web")
-			cmd.Run()
-			cmd = exec.Command("flutter", "config", "--enable-linux-desktop")
-			cmd.Run()
-			cmd = exec.Command("flutter", "config", "--enable-macos-desktop")
-			cmd.Run()
-			cmd = exec.Command("flutter", "config", "--enable-windows-desktop")
-			cmd.Run()
-			cmd = exec.Command("flutter", "config", "--enable-android")
-			cmd.Run()
-			cmd = exec.Command("flutter", "config", "--enable-ios")
-			cmd.Run()
-			cmd = exec.Command("flutter", "config", "--enable-fuchsia")
-			cmd.Run()
-			cmd = exec.Command("flutter", "upgrade")
 			cmd.Run()
 		case 2:
 			os.Exit(0)
