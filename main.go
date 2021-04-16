@@ -37,7 +37,7 @@ func selectOperatingSystem() {
 		gitCloneFlutter()
 		installFlutterOnUnix()
 	default:
-		fmt.Printf("Error: %s is not supported (yet).\n", runtime.GOOS)
+		fmt.Printf("Warning: %s is not supported (yet).\n", runtime.GOOS)
 	}
 }
 
@@ -109,7 +109,7 @@ func uninstallFlutterOnWindows() {
 		case 2:
 			os.Exit(0)
 		default:
-			fmt.Println("Error: this is not a valid response.")
+			fmt.Println("Warning: this is not a valid response.")
 		}
 	}
 }
@@ -167,7 +167,7 @@ func uninstallFlutterOnUnix() {
 		case 2:
 			os.Exit(0)
 		default:
-			fmt.Println("Error: this is not a valid response.")
+			fmt.Println("Warning: this is not a valid response.")
 		}
 	}
 }
