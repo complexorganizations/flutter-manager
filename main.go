@@ -88,22 +88,6 @@ func installFlutterOnWindows() {
 					os.RemoveAll(flutterPath)
 					log.Fatal("Error: Failed to write flutter in system path.")
 				}
-				cmd = exec.Command("flutter", "config", "--enable-web")
-				cmd.Run()
-				cmd = exec.Command("flutter", "config", "--enable-linux-desktop")
-				cmd.Run()
-				cmd = exec.Command("flutter", "config", "--enable-macos-desktop")
-				cmd.Run()
-				cmd = exec.Command("flutter", "config", "--enable-windows-desktop")
-				cmd.Run()
-				cmd = exec.Command("flutter", "config", "--enable-android")
-				cmd.Run()
-				cmd = exec.Command("flutter", "config", "--enable-ios")
-				cmd.Run()
-				cmd = exec.Command("flutter", "config", "--enable-fuchsia")
-				cmd.Run()
-				cmd = exec.Command("flutter", "upgrade")
-				cmd.Run()
 			}
 		}
 	}
@@ -149,22 +133,6 @@ func installFlutterOnUnix() {
 			path.Write([]byte("export PATH=$PATH:" + flutterBin))
 			path.Close()
 			cmd := exec.Command("source", unixProfilePath)
-			cmd.Run()
-			cmd = exec.Command("flutter", "config", "--enable-web")
-			cmd.Run()
-			cmd = exec.Command("flutter", "config", "--enable-linux-desktop")
-			cmd.Run()
-			cmd = exec.Command("flutter", "config", "--enable-macos-desktop")
-			cmd.Run()
-			cmd = exec.Command("flutter", "config", "--enable-windows-desktop")
-			cmd.Run()
-			cmd = exec.Command("flutter", "config", "--enable-android")
-			cmd.Run()
-			cmd = exec.Command("flutter", "config", "--enable-ios")
-			cmd.Run()
-			cmd = exec.Command("flutter", "config", "--enable-fuchsia")
-			cmd.Run()
-			cmd = exec.Command("flutter", "upgrade")
 			cmd.Run()
 		}
 	}
@@ -231,3 +199,20 @@ func userDirectory() string {
 	}
 	return user.HomeDir
 }
+
+// cmd = exec.Command("flutter", "config", "--enable-web")
+// cmd.Run()
+// cmd = exec.Command("flutter", "config", "--enable-linux-desktop")
+// cmd.Run()
+// cmd = exec.Command("flutter", "config", "--enable-macos-desktop")
+// cmd.Run()
+// cmd = exec.Command("flutter", "config", "--enable-windows-desktop")
+// cmd.Run()
+// cmd = exec.Command("flutter", "config", "--enable-android")
+// cmd.Run()
+// cmd = exec.Command("flutter", "config", "--enable-ios")
+// cmd.Run()
+// cmd = exec.Command("flutter", "config", "--enable-fuchsia")
+// cmd.Run()
+// cmd = exec.Command("flutter", "upgrade")
+// cmd.Run()
