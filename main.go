@@ -37,7 +37,7 @@ func selectOperatingSystem() {
 		gitCloneFlutter()
 		installFlutterOnUnix()
 	default:
-		fmt.Printf("Warning: %s is not supported (yet).\n", runtime.GOOS)
+		log.Fatalf("Warning: %s is not supported (yet).\n", runtime.GOOS)
 	}
 }
 
