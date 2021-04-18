@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	//"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -76,7 +76,7 @@ func installFlutterOnWindows() {
 	if folderExists(flutterPath) {
 		path, exists := os.LookupEnv("PATH")
 		if exists {
-			data, err := ioutil.ReadFile(path)
+			data, err := os.ReadFile(path)
 			if err != nil {
 				log.Println(err)
 			}
@@ -119,7 +119,7 @@ func installFlutterOnUnix() {
 		if runtime.GOOS == "darwin" {
 			unixProfilePath = fmt.Sprint(userDirectory() + "/.zprofile")
 		}
-		data, err := ioutil.ReadFile(unixProfilePath)
+		data, err := os.ReadFile(unixProfilePath)
 		if err != nil {
 			log.Println(err)
 		}
@@ -151,17 +151,17 @@ func uninstallFlutterOnUnix() {
 			if runtime.GOOS == "darwin" {
 				unixProfilePath = fmt.Sprint(userDirectory() + "/.zprofile")
 			}
-			data, err := ioutil.ReadFile(unixProfilePath)
+			data, err := os.ReadFile(unixProfilePath)
 			if err != nil {
 				log.Println(err)
 			}
 			if strings.Contains(string(data), "flutter") {
-				read, err := ioutil.ReadFile(unixProfilePath)
+				read, err := os.ReadFile(unixProfilePath)
 				if err != nil {
 					log.Println(err)
 				}
 				newContents := strings.Replace(string(read), ("export PATH=$PATH:" + flutterBin), (""), -1)
-				ioutil.WriteFile(unixProfilePath, []byte(newContents), 0)
+				os.WriteFile(unixProfilePath, []byte(newContents), 0)
 			}
 		case 2:
 			os.Exit(0)
