@@ -117,6 +117,12 @@ func installFlutterOnUnix() {
 	if folderExists(flutterPath) {
 		if runtime.GOOS == "darwin" {
 			unixProfilePath = fmt.Sprint(userDirectory() + "/.zprofile")
+			if !fileExists(unixProfilePath) {
+				unixProfilePath = fmt.Sprint(userDirectory() + "/.bash_profile")
+			}
+			if !fileExists(unixProfilePath) {
+				unixProfilePath = fmt.Sprint(userDirectory() + "/.bashrc")
+			}
 		}
 		data, err := os.ReadFile(unixProfilePath)
 		if err != nil {
@@ -149,6 +155,12 @@ func uninstallFlutterOnUnix() {
 			os.RemoveAll(flutterPath)
 			if runtime.GOOS == "darwin" {
 				unixProfilePath = fmt.Sprint(userDirectory() + "/.zprofile")
+				if !fileExists(unixProfilePath) {
+					unixProfilePath = fmt.Sprint(userDirectory() + "/.bash_profile")
+				}
+				if !fileExists(unixProfilePath) {
+					unixProfilePath = fmt.Sprint(userDirectory() + "/.bashrc")
+				}
 			}
 			data, err := os.ReadFile(unixProfilePath)
 			if err != nil {
@@ -177,6 +189,15 @@ func folderExists(foldername string) bool {
 		return false
 	}
 	return info.IsDir()
+}
+
+// check if a file exists
+func fileExists(filename string) bool {
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return !info.IsDir()
 }
 
 // Check if there is an app installed
