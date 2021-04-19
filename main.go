@@ -115,17 +115,22 @@ func uninstallFlutterOnWindows() {
 // Install Flutter On Linux, Unix
 func installFlutterOnUnix() {
 	if folderExists(flutterPath) {
-		if runtime.GOOS == "darwin" {
+		var tempUnixProfilePath string
+		tempUnixProfilePath = fmt.Sprint(userDirectory() + "/.zprofile")
+		if fileExists(tempUnixProfilePath) {
 			unixProfilePath = fmt.Sprint(userDirectory() + "/.zprofile")
-			if fileExists(unixProfilePath) {
-				unixProfilePath = fmt.Sprint(userDirectory() + "/.zprofile")
-			}
-			if !fileExists(unixProfilePath) {
-				unixProfilePath = fmt.Sprint(userDirectory() + "/.bash_profile")
-			}
-			if !fileExists(unixProfilePath) {
-				unixProfilePath = fmt.Sprint(userDirectory() + "/.bashrc")
-			}
+		}
+		tempUnixProfilePath = fmt.Sprint(userDirectory() + "/.bash_profile")
+		if fileExists(tempUnixProfilePath) {
+			unixProfilePath = fmt.Sprint(userDirectory() + "/.bash_profile")
+		}
+		tempUnixProfilePath = fmt.Sprint(userDirectory() + "/.bashrc")
+		if fileExists(tempUnixProfilePath) {
+			unixProfilePath = fmt.Sprint(userDirectory() + "/.bashrc")
+		}
+		tempUnixProfilePath = fmt.Sprint(userDirectory() + "/.profile")
+		if fileExists(tempUnixProfilePath) {
+			unixProfilePath = fmt.Sprint(userDirectory() + "/.profile")
 		}
 		data, err := os.ReadFile(unixProfilePath)
 		if err != nil {
@@ -156,17 +161,22 @@ func uninstallFlutterOnUnix() {
 		switch number {
 		case 1:
 			os.RemoveAll(flutterPath)
-			if runtime.GOOS == "darwin" {
+			var tempUnixProfilePath string
+			tempUnixProfilePath = fmt.Sprint(userDirectory() + "/.zprofile")
+			if fileExists(tempUnixProfilePath) {
 				unixProfilePath = fmt.Sprint(userDirectory() + "/.zprofile")
-				if fileExists(unixProfilePath) {
-					unixProfilePath = fmt.Sprint(userDirectory() + "/.zprofile")
-				}
-				if !fileExists(unixProfilePath) {
-					unixProfilePath = fmt.Sprint(userDirectory() + "/.bash_profile")
-				}
-				if !fileExists(unixProfilePath) {
-					unixProfilePath = fmt.Sprint(userDirectory() + "/.bashrc")
-				}
+			}
+			tempUnixProfilePath = fmt.Sprint(userDirectory() + "/.bash_profile")
+			if fileExists(tempUnixProfilePath) {
+				unixProfilePath = fmt.Sprint(userDirectory() + "/.bash_profile")
+			}
+			tempUnixProfilePath = fmt.Sprint(userDirectory() + "/.bashrc")
+			if fileExists(tempUnixProfilePath) {
+				unixProfilePath = fmt.Sprint(userDirectory() + "/.bashrc")
+			}
+			tempUnixProfilePath = fmt.Sprint(userDirectory() + "/.profile")
+			if fileExists(tempUnixProfilePath) {
+				unixProfilePath = fmt.Sprint(userDirectory() + "/.profile")
 			}
 			data, err := os.ReadFile(unixProfilePath)
 			if err != nil {
