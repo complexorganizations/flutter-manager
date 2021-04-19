@@ -20,12 +20,14 @@ var tempUnixProfilePath string
 var unixProfilePath string
 
 func init() {
-	switch runtime.GOOS {
-	case "windows", "darwin", "linux":
-		// Clear the temp dir 
-		os.RemoveAll(os.TempDir())
-	default:
-		log.Fatalf("Warning: %s is not supported (yet).\n", runtime.GOOS)
+	// System Requirements Check
+	if !folderExists(flutterPath) {
+		if commandExists("flutter") {
+			log.Fatal("Error: The application flutter was not found in the system.")
+		}
+	}
+	if !commandExists("git") {
+		log.Fatal("Error: The application git was not found in the system.")
 	}
 }
 
@@ -37,29 +39,15 @@ func main() {
 func selectOperatingSystem() {
 	switch runtime.GOOS {
 	case "windows":
-		commandsRequirementsCheck()
 		uninstallFlutterOnWindows()
 		gitCloneFlutter()
 		installFlutterOnWindows()
 	case "darwin", "linux":
-		commandsRequirementsCheck()
 		uninstallFlutterOnUnix()
 		gitCloneFlutter()
 		installFlutterOnUnix()
 	default:
 		log.Fatalf("Warning: %s is not supported (yet).\n", runtime.GOOS)
-	}
-}
-
-// System Requirements Check
-func commandsRequirementsCheck() {
-	if !folderExists(flutterPath) {
-		if commandExists("flutter") {
-			log.Fatal("Error: The application flutter was not found in the system.")
-		}
-	}
-	if !commandExists("git") {
-		log.Fatal("Error: The application git was not found in the system.")
 	}
 }
 
