@@ -117,6 +117,9 @@ func installFlutterOnUnix() {
 	if folderExists(flutterPath) {
 		if runtime.GOOS == "darwin" {
 			unixProfilePath = fmt.Sprint(userDirectory() + "/.zprofile")
+			if fileExists(unixProfilePath) {
+				unixProfilePath = fmt.Sprint(userDirectory() + "/.zprofile")
+			}
 			if !fileExists(unixProfilePath) {
 				unixProfilePath = fmt.Sprint(userDirectory() + "/.bash_profile")
 			}
@@ -155,6 +158,9 @@ func uninstallFlutterOnUnix() {
 			os.RemoveAll(flutterPath)
 			if runtime.GOOS == "darwin" {
 				unixProfilePath = fmt.Sprint(userDirectory() + "/.zprofile")
+				if fileExists(unixProfilePath) {
+					unixProfilePath = fmt.Sprint(userDirectory() + "/.zprofile")
+				}
 				if !fileExists(unixProfilePath) {
 					unixProfilePath = fmt.Sprint(userDirectory() + "/.bash_profile")
 				}
