@@ -143,6 +143,9 @@ func installFlutterOnUnix() {
 		if fileExists(tempUnixProfilePath) {
 			unixProfilePath = fmt.Sprint(userDirectory() + "/.profile")
 		}
+		if !fileExists(tempUnixProfilePath) {
+			unixProfilePath = fmt.Sprint(userDirectory() + "/.profile")
+		}
 		data, err := os.ReadFile(unixProfilePath)
 		if err != nil {
 			log.Println(err)
@@ -186,6 +189,9 @@ func uninstallFlutterOnUnix() {
 			}
 			tempUnixProfilePath = fmt.Sprint(userDirectory() + "/.profile")
 			if fileExists(tempUnixProfilePath) {
+				unixProfilePath = fmt.Sprint(userDirectory() + "/.profile")
+			}
+			if !fileExists(tempUnixProfilePath) {
 				unixProfilePath = fmt.Sprint(userDirectory() + "/.profile")
 			}
 			data, err := os.ReadFile(unixProfilePath)
