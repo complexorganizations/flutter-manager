@@ -19,6 +19,16 @@ var (
 var tempUnixProfilePath string
 var unixProfilePath string
 
+func init() {
+	switch runtime.GOOS {
+	case "windows", "darwin", "linux":
+		// Clear the temp dir 
+		os.RemoveAll(os.TempDir())
+	default:
+		log.Fatalf("Warning: %s is not supported (yet).\n", runtime.GOOS)
+	}
+}
+
 func main() {
 	selectOperatingSystem()
 }
