@@ -14,7 +14,6 @@ var (
 	flutterPath     = fmt.Sprint(userDirectory() + "/flutter")
 	flutterBin      = fmt.Sprint(flutterPath + "/bin")
 	flutterTempPath = fmt.Sprint(os.TempDir() + "/flutter")
-	unixProfilePath = fmt.Sprint(userDirectory() + "/.profile")
 )
 
 func main() {
@@ -116,6 +115,7 @@ func uninstallFlutterOnWindows() {
 func installFlutterOnUnix() {
 	if folderExists(flutterPath) {
 		var tempUnixProfilePath string
+		var unixProfilePath string
 		tempUnixProfilePath = fmt.Sprint(userDirectory() + "/.zprofile")
 		if fileExists(tempUnixProfilePath) {
 			unixProfilePath = fmt.Sprint(userDirectory() + "/.zprofile")
@@ -162,6 +162,7 @@ func uninstallFlutterOnUnix() {
 		case 1:
 			os.RemoveAll(flutterPath)
 			var tempUnixProfilePath string
+			var unixProfilePath string
 			tempUnixProfilePath = fmt.Sprint(userDirectory() + "/.zprofile")
 			if fileExists(tempUnixProfilePath) {
 				unixProfilePath = fmt.Sprint(userDirectory() + "/.zprofile")
