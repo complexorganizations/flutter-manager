@@ -56,18 +56,18 @@ func gitCloneFlutter() {
 	if !folderExists(userDirectory()) {
 		err = os.Mkdir(userDirectory(), 0755)
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal("Warning: The user directory could not be created.")
 		}
 	}
 	if !folderExists(flutterPath) {
 		err = os.Chdir(userDirectory())
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal("Warning: The attempt to access the user directory failed.")
 		}
 		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
 		err = cmd.Run()
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal("Warning: The cloning of the flutter repo failed.")
 		}
 	}
 }
@@ -79,13 +79,13 @@ func installFlutterOnDOS() {
 		if exists {
 			data, err := os.ReadFile(path)
 			if err != nil {
-				log.Println(err)
+				log.Println("Error: The data in path could not be read.")
 			}
 			if !strings.Contains(string(data), "flutter") {
 				cmd := exec.Command("setx", "flutter", flutterBin)
 				err = cmd.Run()
 				if err != nil {
-					log.Fatal("Error: Failed to write flutter in system path.")
+					log.Fatal("Warning: Failed to write flutter in system path.")
 				}
 			}
 		}
@@ -104,17 +104,17 @@ func uninstallFlutterOnDOS() {
 		case 1:
 			err = os.RemoveAll(flutterPath)
 			if err != nil {
-				log.Fatal(err)
+				log.Fatal("Warning: The flutter files could not be removed.")
 			}
 			cmd := exec.Command("REG", "delete", "HKCU", `\`, "Environment", "/F /V", "Flutter")
 			err = cmd.Run()
 			if err != nil {
-				log.Fatal(err)
+				log.Fatal("Warning: The flutter path could not be removed.")
 			}
 		case 2:
 			os.Exit(0)
 		default:
-			fmt.Println("Warning: this is not a valid response.")
+			fmt.Println("Error: this is not a valid response.")
 		}
 	}
 }
@@ -155,7 +155,7 @@ func installFlutterOnUnix() {
 			cmd := exec.Command("source", unixProfilePath)
 			err = cmd.Run()
 			if err != nil {
-				log.Fatal(err)
+				log.Fatal("Warning: Failed to write flutter in system path.")
 			}
 		}
 	}
@@ -173,7 +173,7 @@ func uninstallFlutterOnUnix() {
 		case 1:
 			err = os.RemoveAll(flutterPath)
 			if err != nil {
-				log.Fatal(err)
+				log.Fatal("Warning: The flutter files could not be removed.")
 			}
 			tempUnixProfilePath = fmt.Sprint(userDirectory() + "/.zprofile")
 			if fileExists(tempUnixProfilePath) {
@@ -201,18 +201,18 @@ func uninstallFlutterOnUnix() {
 			if strings.Contains(string(data), "flutter") {
 				read, err := os.ReadFile(unixProfilePath)
 				if err != nil {
-					log.Println(err)
+					log.Fatal("Warning: The flutter path could not be read.")
 				}
 				newContents := strings.Replace(string(read), ("export PATH=$PATH:" + flutterBin), (""), -1)
 				err = os.WriteFile(unixProfilePath, []byte(newContents), 0)
 				if err != nil {
-					log.Println(err)
+					log.Fatal("Warning: The flutter path could not be removed.")
 				}
 			}
 		case 2:
 			os.Exit(0)
 		default:
-			fmt.Println("Warning: this is not a valid response.")
+			fmt.Println("Error: this is not a valid response.")
 		}
 	}
 }
