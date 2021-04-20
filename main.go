@@ -23,7 +23,7 @@ func init() {
 	// System Requirements Check
 	if !folderExists(flutterPath) {
 		if commandExists("flutter") {
-			log.Fatal("Error: The application flutter was not found in the system.")
+			log.Fatal("Error: The application flutter was found in the system.")
 		}
 	}
 	if !commandExists("git") {
@@ -143,12 +143,12 @@ func installFlutterOnUnix() {
 		}
 		data, err := os.ReadFile(unixProfilePath)
 		if err != nil {
-			log.Fatal("Warning: The flutter path could not be read.")
+			log.Fatal("Warning: The system path could not be read.")
 		}
 		if !strings.Contains(string(data), "flutter") {
 			path, err := os.OpenFile(unixProfilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 			if err != nil {
-				log.Fatal("Warning: Failed to write flutter in system path.")
+				log.Fatal("Warning: Failed to read system path.")
 			}
 			path.Write([]byte("export PATH=$PATH:" + flutterBin))
 			path.Close()
@@ -196,12 +196,12 @@ func uninstallFlutterOnUnix() {
 			}
 			data, err := os.ReadFile(unixProfilePath)
 			if err != nil {
-				log.Fatal("Warning: The flutter path could not be read.")
+				log.Fatal("Warning: The system path could not be read.")
 			}
 			if strings.Contains(string(data), "flutter") {
 				read, err := os.ReadFile(unixProfilePath)
 				if err != nil {
-					log.Fatal("Warning: The flutter path could not be read.")
+					log.Fatal("Warning: The system path could not be read.")
 				}
 				newContents := strings.Replace(string(read), ("export PATH=$PATH:" + flutterBin), (""), -1)
 				err = os.WriteFile(unixProfilePath, []byte(newContents), 0)
