@@ -11,13 +11,13 @@ import (
 )
 
 var (
-	flutterPath     = fmt.Sprint(userDirectory() + "/flutter")
-	flutterBin      = fmt.Sprint(flutterPath + "/bin")
-	flutterTempPath = fmt.Sprint(os.TempDir() + "/flutter")
+	flutterPath = fmt.Sprint(userDirectory() + "/flutter")
+	flutterBin  = fmt.Sprint(flutterPath + "/bin")
 )
 
 var tempUnixProfilePath string
 var unixProfilePath string
+var err error
 
 func init() {
 	// System Requirements Check
@@ -53,20 +53,16 @@ func selectOperatingSystem() {
 
 // git clone flutter
 func gitCloneFlutter() {
-	if !folderExists(os.TempDir()) {
-		os.Mkdir(os.TempDir(), 0755)
-	}
 	if !folderExists(userDirectory()) {
 		os.Mkdir(userDirectory(), 0755)
 	}
-	if folderExists(flutterTempPath) {
-		os.RemoveAll(flutterTempPath)
-	}
-	if !folderExists(flutterTempPath) {
-		os.Chdir(os.TempDir())
+	if !folderExists(flutterPath) {
+		os.Chdir(flutterPath)
 		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
-		cmd.Run()
-		os.Rename(flutterTempPath, flutterPath)
+		err = cmd.Run()
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 }
 
@@ -83,7 +79,6 @@ func installFlutterOnDOS() {
 				cmd := exec.Command("setx", "flutter", flutterBin)
 				err = cmd.Run()
 				if err != nil {
-					os.RemoveAll(flutterPath)
 					log.Fatal("Error: Failed to write flutter in system path.")
 				}
 			}
@@ -101,9 +96,15 @@ func uninstallFlutterOnDOS() {
 		fmt.Scanln(&number)
 		switch number {
 		case 1:
-			os.RemoveAll(flutterPath)
+			err = os.RemoveAll(flutterPath)
+			if err != nil {
+				log.Fatal(err)
+			}
 			cmd := exec.Command("REG", "delete", "HKCU", `\`, "Environment", "/F /V", "Flutter")
-			cmd.Run()
+			err = cmd.Run()
+			if err != nil {
+				log.Fatal(err)
+			}
 		case 2:
 			os.Exit(0)
 		default:
@@ -147,7 +148,10 @@ func installFlutterOnUnix() {
 			path.Write([]byte("export PATH=$PATH:" + flutterBin))
 			path.Close()
 			cmd := exec.Command("source", unixProfilePath)
-			cmd.Run()
+			err = cmd.Run()
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 	}
 }
@@ -162,7 +166,10 @@ func uninstallFlutterOnUnix() {
 		fmt.Scanln(&number)
 		switch number {
 		case 1:
-			os.RemoveAll(flutterPath)
+			err = os.RemoveAll(flutterPath)
+			if err != nil {
+				log.Fatal(err)
+			}
 			tempUnixProfilePath = fmt.Sprint(userDirectory() + "/.zprofile")
 			if fileExists(tempUnixProfilePath) {
 				unixProfilePath = fmt.Sprint(userDirectory() + "/.zprofile")
