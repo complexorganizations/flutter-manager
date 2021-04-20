@@ -114,7 +114,7 @@ func uninstallFlutterOnDOS() {
 		case 2:
 			os.Exit(0)
 		default:
-			fmt.Println("Error: this is not a valid response.")
+			log.Println("Error: this is not a valid response.")
 		}
 	}
 }
@@ -212,7 +212,7 @@ func uninstallFlutterOnUnix() {
 		case 2:
 			os.Exit(0)
 		default:
-			fmt.Println("Error: this is not a valid response.")
+			log.Println("Error: this is not a valid response.")
 		}
 	}
 }
