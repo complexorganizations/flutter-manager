@@ -143,12 +143,12 @@ func installFlutterOnUnix() {
 		}
 		data, err := os.ReadFile(unixProfilePath)
 		if err != nil {
-			log.Println(err)
+			log.Fatal("Warning: The flutter path could not be read.")
 		}
 		if !strings.Contains(string(data), "flutter") {
 			path, err := os.OpenFile(unixProfilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 			if err != nil {
-				log.Fatal("Error: Failed to write flutter in system path.")
+				log.Fatal("Warning: Failed to write flutter in system path.")
 			}
 			path.Write([]byte("export PATH=$PATH:" + flutterBin))
 			path.Close()
@@ -196,7 +196,7 @@ func uninstallFlutterOnUnix() {
 			}
 			data, err := os.ReadFile(unixProfilePath)
 			if err != nil {
-				log.Println(err)
+				log.Fatal("Warning: The flutter path could not be read.")
 			}
 			if strings.Contains(string(data), "flutter") {
 				read, err := os.ReadFile(unixProfilePath)
