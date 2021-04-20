@@ -1,0 +1,16 @@
+name: flutter-manager
+version: git
+base: core18
+grade: stable
+confinement: strict
+summary: Flutter Manager
+description: Flutter install / uninstall
+parts:
+  flutter-manager:
+    plugin: go
+    go-importpath: github.com/complexorganizations/flutter-manager
+    source: .
+    source-type: git
+apps:
+  flutter-manager:
+    command: bin/flutter-manager
