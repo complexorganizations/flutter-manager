@@ -54,10 +54,16 @@ func selectOperatingSystem() {
 // git clone flutter
 func gitCloneFlutter() {
 	if !folderExists(userDirectory()) {
-		os.Mkdir(userDirectory(), 0755)
+		err = os.Mkdir(userDirectory(), 0755)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 	if !folderExists(flutterPath) {
-		os.Chdir(flutterPath)
+		err = os.Chdir(userDirectory())
+		if err != nil {
+			log.Fatal(err)
+		}
 		cmd := exec.Command("git", "clone", "https://github.com/flutter/flutter.git", "-b", "stable")
 		err = cmd.Run()
 		if err != nil {
@@ -142,7 +148,6 @@ func installFlutterOnUnix() {
 		if !strings.Contains(string(data), "flutter") {
 			path, err := os.OpenFile(unixProfilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 			if err != nil {
-				os.RemoveAll(flutterPath)
 				log.Fatal("Error: Failed to write flutter in system path.")
 			}
 			path.Write([]byte("export PATH=$PATH:" + flutterBin))
