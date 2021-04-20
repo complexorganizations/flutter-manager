@@ -39,9 +39,9 @@ func main() {
 func selectOperatingSystem() {
 	switch runtime.GOOS {
 	case "windows":
-		uninstallFlutterOnWindows()
+		uninstallFlutterOnDOS()
 		gitCloneFlutter()
-		installFlutterOnWindows()
+		installFlutterOnDOS()
 	case "darwin", "linux":
 		uninstallFlutterOnUnix()
 		gitCloneFlutter()
@@ -71,7 +71,7 @@ func gitCloneFlutter() {
 }
 
 // Install Flutter On Windows
-func installFlutterOnWindows() {
+func installFlutterOnDOS() {
 	if folderExists(flutterPath) {
 		path, exists := os.LookupEnv("PATH")
 		if exists {
@@ -92,7 +92,7 @@ func installFlutterOnWindows() {
 }
 
 // Uninstall flutter on Windows
-func uninstallFlutterOnWindows() {
+func uninstallFlutterOnDOS() {
 	if folderExists(flutterPath) {
 		fmt.Println("What do you want to do?")
 		fmt.Println("1. Uninstall Flutter")
