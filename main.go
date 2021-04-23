@@ -15,9 +15,11 @@ var (
 	flutterBin  = fmt.Sprint(flutterPath + "/bin")
 )
 
-var tempUnixProfilePath string
-var unixProfilePath string
-var err error
+var (
+	tempUnixProfilePath string
+	unixProfilePath     string
+	err                 error
+)
 
 func init() {
 	// System Requirements Check
