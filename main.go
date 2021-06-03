@@ -255,3 +255,11 @@ func userDirectory() string {
 	}
 	return user.HomeDir
 }
+
+// flutter config --enable-web
+// flutter config --enable-linux-desktop
+// flutter config --enable-macos-desktop
+// flutter config --enable-windows-desktop
+// flutter config --enable-android
+// flutter config --enable-ios
+// flutter config --enable-fuchsia
