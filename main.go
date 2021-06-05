@@ -84,7 +84,7 @@ func installFlutterOnDOS() {
 				log.Println("Error: The data in path could not be read.")
 			}
 			if !strings.Contains(string(data), "flutter") {
-				cmd := exec.Command("setx", "flutter", flutterBin)
+				cmd := exec.Command("setx", "path", "%path%"+flutterBin)
 				err = cmd.Run()
 				if err != nil {
 					log.Fatal("Warning: Failed to write flutter in system path.")
